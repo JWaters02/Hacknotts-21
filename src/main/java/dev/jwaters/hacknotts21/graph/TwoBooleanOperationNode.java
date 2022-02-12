@@ -1,6 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
-import dev.jwaters.hacknotts21.type.IntType;
+import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,13 +50,13 @@ public final class TwoBooleanOperationNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public Type getExpectedChildType(GraphNode<?> child) {
-        return IntType.INSTANCE;
+    public Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
+        return BooleanType.INSTANCE;
     }
 
     @Override
-    public Type getReturnType() {
-        return IntType.INSTANCE;
+    public Type getReturnType(FunctionRepr containingFunc) {
+        return BooleanType.INSTANCE;
     }
 
     @Override

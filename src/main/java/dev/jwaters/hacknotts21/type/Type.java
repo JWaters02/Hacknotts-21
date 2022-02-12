@@ -1,10 +1,41 @@
 package dev.jwaters.hacknotts21.type;
 
+import com.google.gson.*;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public sealed class Type permits BooleanType, IntType, StringType, VoidType {
+public abstract sealed class Type permits BooleanType, IntType, StringType, VoidType {
+
+    public static class Serializer implements JsonDeserializer<Type>, JsonSerializer<Type> {
+        @Override
+        public Type deserialize(JsonElement json, java.lang.reflect.Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            String type = json.getAsString();
+            return switch (type) {
+                case "boolean" -> BooleanType.INSTANCE;
+                case "int" -> IntType.INSTANCE;
+                case "string" -> StringType.INSTANCE;
+                case "void" -> VoidType.INSTANCE;
+                default -> throw new JsonParseException("Unknown type: " + type);
+            };
+        }
+
+        @Override
+        public JsonElement serialize(Type src, java.lang.reflect.Type typeOfSrc, JsonSerializationContext context) {
+            if (src instanceof BooleanType) {
+                return new JsonPrimitive("boolean");
+            } else if (src instanceof IntType) {
+                return new JsonPrimitive("int");
+            } else if (src instanceof StringType) {
+                return new JsonPrimitive("string");
+            } else if (src instanceof VoidType) {
+                return new JsonPrimitive("void");
+            } else {
+                throw new IllegalArgumentException("Unknown type: " + src.getClass().getName());
+            }
+        }
+    }
+
     public static class TypeChooser extends JPanel {
         private final boolean includeVoid;
         private final JComboBox<TypeType> comboBox;

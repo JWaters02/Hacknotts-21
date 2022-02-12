@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class BooleanLiteralNode extends GraphNode<JComboBox<Boolean>> {
+    @Expose
     private boolean value;
 
     public BooleanLiteralNode(@Nullable GraphNode<?> parent) {
@@ -16,12 +18,12 @@ public final class BooleanLiteralNode extends GraphNode<JComboBox<Boolean>> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return null;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return BooleanType.INSTANCE;
     }
 

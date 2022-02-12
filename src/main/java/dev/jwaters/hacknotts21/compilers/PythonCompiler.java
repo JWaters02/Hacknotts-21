@@ -5,6 +5,7 @@ import dev.jwaters.hacknotts21.graph.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 class PythonCompiler extends CodeCompiler {
@@ -14,11 +15,6 @@ class PythonCompiler extends CodeCompiler {
     public PythonCompiler(File outFile) throws IOException {
         this.writer = new FileWriter(outFile);
         this.indentationLevel = 0;
-    }
-
-    public void compile(Map<String, BlockNode> code) throws IOException {
-        handleNode(code.get("main"));
-        close();
     }
 
     @Override

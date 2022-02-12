@@ -1,11 +1,13 @@
 package dev.jwaters.hacknotts21.compilers;
 
+import dev.jwaters.hacknotts21.DnDSerde;
 import dev.jwaters.hacknotts21.MainForm;
 import dev.jwaters.hacknotts21.graph.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 enum Language {
@@ -14,7 +16,7 @@ enum Language {
 }
 
 public abstract class CodeCompiler {
-    public static void compile(Map<String, BlockNode> code, Language language, File outFile) throws IOException {
+    public static void compile(Collection<FunctionRepr> code, Language language, File outFile) throws IOException {
         switch (language) {
             case PYTHON -> {
                 PythonCompiler pythonCompiler = new PythonCompiler(outFile);
@@ -25,8 +27,13 @@ public abstract class CodeCompiler {
                 javaCompiler.compile(code);
             }
         }
-        MainForm mainForm = new MainForm();
-        mainForm.outputCompiledCode(outFile);
+//        MainForm mainForm = new MainForm();
+//        mainForm.outputCompiledCode(outFile);
+    }
+
+    public void compile(Collection<FunctionRepr> code) throws IOException {
+        handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
+        close();
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
@@ -86,33 +93,42 @@ public abstract class CodeCompiler {
     abstract void close() throws IOException;
 
     public static void main(String[] args) throws IOException {
-        var blocknode = new BlockNode(null);
-        var ifnode = new IfNode(blocknode);
-        var condition = new TwoBooleanOperationNode(ifnode);
-        condition.setOperation(TwoBooleanOperationNode.TwoBooleanOperationEnum.EQUAL);
-        var getvar1 = new GetVarNode(condition);
-        getvar1.setVarName("test");
-        var literal1 = new IntegerLiteralNode(condition);
-        literal1.setValue(0);
-        condition.setLeft(getvar1);
-        condition.setRight(literal1);
+//        var blocknode = new BlockNode(null);
+//
+//        var declare = new DeclareVarNode(blocknode);
+//        declare.setName("test");
+//        declare.setType(IntType.INSTANCE);
+//
+//        var ifnode = new IfNode(blocknode);
+//        var condition = new TwoNumberOperationNode(ifnode);
+//        condition.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.EQUAL);
+//        var getvar1 = new GetVarNode(condition);
+//        getvar1.setVarName("test");
+//        var literal1 = new IntegerLiteralNode(condition);
+//        literal1.setValue(0);
+//        condition.setLeft(getvar1);
+//        condition.setRight(literal1);
+//
+//        var setvar = new SetVarNode(ifnode);
+//        setvar.setVarName("test");
+//        var add = new TwoNumberOperationNode(setvar);
+//        add.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.ADD);
+//        var getvar2 = new GetVarNode(add);
+//        getvar2.setVarName("test");
+//        var literal2 = new IntegerLiteralNode(add);
+//        literal2.setValue(1);
+//
+//        add.setLeft(getvar2);
+//        add.setRight(literal2);
+//        setvar.setValue(add);
+//        ifnode.setCondition(condition);
+//        ifnode.getBody().getChildren().add(setvar);
+//        blocknode.getChildren().add(ifnode);
+//        compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
 
-        var setvar = new SetVarNode(ifnode);
-        setvar.setVarName("test");
-        var add = new TwoNumberOperationNode(setvar);
-        add.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.ADD);
-        var getvar2 = new GetVarNode(add);
-        getvar2.setVarName("test");
-        var literal2 = new IntegerLiteralNode(add);
-        literal2.setValue(1);
+        var functions = DnDSerde.readFromFile(new File("code.json"));
 
-        add.setLeft(getvar2);
-        add.setRight(literal2);
-        setvar.setValue(add);
-        ifnode.setCondition(condition);
-        ifnode.getBody().getChildren().add(setvar);
-        blocknode.getChildren().add(ifnode);
-        compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
+        CodeCompiler.compile(functions, Language.PYTHON, new File("test.py"));
     }
 }
 

@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.StringType;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class PrintNode extends GraphNode<JPanel> {
+    @Expose
     @Nullable
     private GraphNode<?> value;
 
@@ -18,12 +20,12 @@ public final class PrintNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public Type getExpectedChildType(GraphNode<?> child) {
+    public Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return StringType.INSTANCE;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return VoidType.INSTANCE;
     }
 

@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.StringType;
 import dev.jwaters.hacknotts21.type.Type;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class StringLiteralNode extends GraphNode<HintTextField> {
+    @Expose
     private String value;
 
     public String getValue() {
@@ -24,12 +26,12 @@ public final class StringLiteralNode extends GraphNode<HintTextField> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return null;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return StringType.INSTANCE;
     }
 
