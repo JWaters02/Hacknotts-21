@@ -1,23 +1,23 @@
 package dev.jwaters.hacknotts21.graph;
 
+import dev.jwaters.hacknotts21.type.StringType;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public final class BlockNode extends GraphNode<JPanel> {
-    private final List<GraphNode<?>> children = new ArrayList<>();
+public final class PrintNode extends GraphNode<JPanel> {
+    @Nullable
+    private GraphNode<?> value;
 
-    public BlockNode(@Nullable GraphNode<?> parent) {
+    public PrintNode(@Nullable GraphNode<?> parent) {
         super(parent);
     }
 
     @Override
     public Type getExpectedChildType(GraphNode<?> child) {
-        return VoidType.INSTANCE;
+        return StringType.INSTANCE;
     }
 
     @Override
@@ -40,7 +40,12 @@ public final class BlockNode extends GraphNode<JPanel> {
 
     }
 
-    public List<GraphNode<?>> getChildren() {
-        return children;
+    @Nullable
+    public GraphNode<?> getValue() {
+        return value;
+    }
+
+    public void setValue(@Nullable GraphNode<?> value) {
+        this.value = value;
     }
 }

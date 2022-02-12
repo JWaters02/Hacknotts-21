@@ -1,27 +1,25 @@
 package dev.jwaters.hacknotts21.graph;
 
-import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public final class IfNode extends GraphNode<JPanel> {
+public final class SetVarNode extends GraphNode<JPanel> {
+    private String varName = "";
     @Nullable
-    private GraphNode<?> condition;
-    private final BlockNode body = new BlockNode(this);
+    private GraphNode<?> value;
 
-    public IfNode(@Nullable GraphNode<?> parent) {
+    public SetVarNode(@Nullable GraphNode<?> parent) {
         super(parent);
     }
 
     @Override
     public @Nullable Type getExpectedChildType(GraphNode<?> child) {
-        if (child == condition) {
-            return BooleanType.INSTANCE;
-        } else if (child == body) {
-            return VoidType.INSTANCE;
+        DeclareVarNode declareVar = DeclareVarNode.resolveVariable(varName, this);
+        if (declareVar != null) {
+            return declareVar.getType();
         }
         return null;
     }
@@ -46,16 +44,20 @@ public final class IfNode extends GraphNode<JPanel> {
 
     }
 
-    public void setCondition(@Nullable GraphNode<?> condition) {
-        this.condition = condition;
+    public String getVarName() {
+        return varName;
+    }
+
+    public void setVarName(String varName) {
+        this.varName = varName;
     }
 
     @Nullable
-    public GraphNode<?> getCondition() {
-        return condition;
+    public GraphNode<?> getValue() {
+        return value;
     }
 
-    public BlockNode getBody() {
-        return body;
+    public void setValue(@Nullable GraphNode<?> value) {
+        this.value = value;
     }
 }
