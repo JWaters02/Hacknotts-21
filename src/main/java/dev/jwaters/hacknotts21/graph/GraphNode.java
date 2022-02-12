@@ -24,6 +24,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         PrintNode,
         SetVarNode,
         StringLiteralNode,
+        TwoBooleanOperationNode,
         TwoNumberOperationNode {
     @Nullable
     private final GraphNode<?> parent;
