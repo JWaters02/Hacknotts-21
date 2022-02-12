@@ -24,7 +24,7 @@ public abstract class CodeCompiler {
                 ifnode.setCondition(declarenode);
                 ifnode.getBody().getChildren().add(declarenode);
                 blocknode.getChildren().add(ifnode);
-                pythonCompiler.compile(Map.of("main", blocknode));
+                pythonCompiler.compile(code);
             }
         }
     }
@@ -36,16 +36,22 @@ public abstract class CodeCompiler {
             ifStatement(ifnode);
         } else if (node instanceof IfElseNode ifelsenode) {
             ifElseStatement(ifelsenode);
-        } else if (node instanceof WhileNode whileNode) {
-            whileStatement(whileNode);
+        } else if (node instanceof WhileNode whilenode) {
+            whileStatement(whilenode);
+        } else if (node instanceof GetVarNode getvarnode) {
+            getVar(getvarnode);
+        } else if (node instanceof InputNode inputnode) {
+            input(inputnode);
+        } else if (node instanceof PrintNode printnode) {
+            print(printnode);
+        } else if (node instanceof SetVarNode setvarnode) {
+            setVar(setvarnode);
         } else if (node instanceof BlockNode blockNode) {
             for (GraphNode<?> child : blockNode.getChildren()) {
                 handleNode(child);
             }
         }
     }
-
-    abstract void setVar();
 
     abstract void declareVar(DeclareVarNode node) throws IOException;
 
@@ -57,10 +63,29 @@ public abstract class CodeCompiler {
 
     abstract void blockStatement(BlockNode node) throws IOException;
 
+    abstract void getVar(GetVarNode node) throws IOException;
+
+    abstract void input(InputNode node) throws IOException;
+
+    abstract void print(PrintNode node) throws IOException;
+
+    abstract void setVar(SetVarNode node) throws IOException;
+
     abstract void close() throws IOException;
 
     public static void main(String[] args) throws IOException {
-        compile(null, Language.PYTHON, new File("test.py"));
+        var blocknode = new BlockNode(null);
+        var ifnode = new IfNode(blocknode);
+        var getvar = new GetVarNode(ifnode);
+        var setvar = new SetVarNode(ifnode);
+        var input = new InputNode(setvar);
+        getvar.setVarName("test");
+        setvar.setVarName("test");
+        setvar.setValue(input);
+        ifnode.setCondition(getvar);
+        ifnode.getBody().getChildren().add(setvar);
+        blocknode.getChildren().add(ifnode);
+        compile(Map.of("main", blocknode), Language.PYTHON, new File("test.py"));
     }
 }
 
@@ -76,11 +101,6 @@ class PythonCompiler extends CodeCompiler {
     public void compile(Map<String, BlockNode> code) throws IOException {
         handleNode(code.get("main"));
         close();
-    }
-
-    @Override
-    void setVar() {
-
     }
 
     @Override
@@ -142,6 +162,30 @@ class PythonCompiler extends CodeCompiler {
             printIndent();
             handleNode(child);
         }
+    }
+
+    @Override
+    void getVar(GetVarNode node) throws IOException {
+        writer.write(node.getVarName());
+    }
+
+    @Override
+    void input(InputNode node) throws IOException {
+        writer.write("input()");
+    }
+
+    @Override
+    void print(PrintNode node) throws IOException {
+        writer.write("print(");
+        handleNode(node.getValue());
+        writer.write(")");
+    }
+
+    @Override
+    void setVar(SetVarNode node) throws IOException {
+        writer.write(node.getVarName());
+        writer.write(" = ");
+        handleNode(node.getValue());
     }
 
     @Override
