@@ -1,4 +1,4 @@
-package dev.jwaters.hacknotts21.type;
+package dev.jwaters.hacknotts21.codecorrectness;
 
 import dev.jwaters.hacknotts21.graph.BlockNode;
 import dev.jwaters.hacknotts21.graph.GraphNode;
