@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.IntType;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class IntegerLiteralNode extends GraphNode<JSpinner> {
+    @Expose
     private int value;
 
     public int getValue() {
@@ -24,12 +26,12 @@ public final class IntegerLiteralNode extends GraphNode<JSpinner> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return null;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return IntType.INSTANCE;
     }
 

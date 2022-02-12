@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
@@ -9,7 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 public final class SetVarNode extends GraphNode<JPanel> {
+    @Expose
     private String varName = "";
+    @Expose
     @Nullable
     private GraphNode<?> value;
 
@@ -18,8 +21,8 @@ public final class SetVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
-        DeclareVarNode declareVar = DeclareVarNode.resolveVariable(varName, this);
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
+        DeclareVarNode declareVar = DeclareVarNode.resolveVariable(varName, this, containingFunc);
         if (declareVar != null) {
             return declareVar.getType();
         }
@@ -27,7 +30,7 @@ public final class SetVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return VoidType.INSTANCE;
     }
 

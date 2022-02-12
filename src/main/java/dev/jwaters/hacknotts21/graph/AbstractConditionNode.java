@@ -22,7 +22,7 @@ public abstract sealed class AbstractConditionNode extends GraphNode<AbstractCon
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         if (child == condition) {
             return BooleanType.INSTANCE;
         } else if (child == body) {
@@ -32,7 +32,7 @@ public abstract sealed class AbstractConditionNode extends GraphNode<AbstractCon
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return VoidType.INSTANCE;
     }
 

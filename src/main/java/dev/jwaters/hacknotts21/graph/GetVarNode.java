@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class GetVarNode extends GraphNode<GetVarNode.Panel> {
+    @Expose
     private String varName = "";
 
     public GetVarNode(@Nullable GraphNode<?> parent) {
@@ -17,13 +19,13 @@ public final class GetVarNode extends GraphNode<GetVarNode.Panel> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return null;
     }
 
     @Override
-    public @Nullable Type getReturnType() {
-        DeclareVarNode declareVar = DeclareVarNode.resolveVariable(varName, this);
+    public @Nullable Type getReturnType(FunctionRepr containingFunc) {
+        DeclareVarNode declareVar = DeclareVarNode.resolveVariable(varName, this, containingFunc);
         if (declareVar != null) {
             return declareVar.getType();
         }

@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
@@ -12,8 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
+    @Expose
     private GraphNode<?> condition = new BooleanLiteralNode(this);
+    @Expose
     private final BlockNode ifBody = new BlockNode(this);
+    @Expose
     private final BlockNode elseBody = new BlockNode(this);
 
     public IfElseNode(@Nullable GraphNode<?> parent) {
@@ -21,7 +25,7 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         if (child == condition) {
             return BooleanType.INSTANCE;
         } else if (child == ifBody || child == elseBody) {
@@ -31,7 +35,7 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return VoidType.INSTANCE;
     }
 

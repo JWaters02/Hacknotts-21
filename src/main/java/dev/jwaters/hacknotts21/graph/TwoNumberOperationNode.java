@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.IntType;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +31,11 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
         }
     }
 
+    @Expose
     private GraphNode<?> left = new IntegerLiteralNode(this);
+    @Expose
     private GraphNode<?> right = new IntegerLiteralNode(this);
+    @Expose
     private TwoNumberOperationEnum operation;
 
     public TwoNumberOperationNode(@Nullable GraphNode<?> parent) {
@@ -63,12 +67,12 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
     }
 
     @Override
-    public Type getExpectedChildType(GraphNode<?> child) {
+    public Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return IntType.INSTANCE;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return IntType.INSTANCE;
     }
 

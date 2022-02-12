@@ -13,7 +13,7 @@ enum Language {
 }
 
 public abstract class CodeCompiler {
-    public static void compile(Map<String, BlockNode> code, Language language, File outFile) throws IOException {
+    public static void compile(Map<String, FunctionRepr> code, Language language, File outFile) throws IOException {
         switch (language) {
             case PYTHON -> {
                 PythonCompiler pythonCompiler = new PythonCompiler(outFile);
@@ -84,7 +84,9 @@ public abstract class CodeCompiler {
     abstract void close() throws IOException;
 
     public static void main(String[] args) throws IOException {
-        var blocknode = new BlockNode(null);
+        FunctionRepr func = new FunctionRepr("main");
+
+        var blocknode = func.getBody();
         var ifnode = new IfNode(blocknode);
         var getvar1 = new GetVarNode(ifnode);
         getvar1.setVarName("test");
@@ -103,7 +105,8 @@ public abstract class CodeCompiler {
         ifnode.setCondition(getvar1);
         ifnode.getBody().getChildren().add(setvar);
         blocknode.getChildren().add(ifnode);
-        compile(Map.of("main", blocknode), Language.PYTHON, new File("test.py"));
+
+        compile(Map.of("main", func), Language.PYTHON, new File("test.py"));
     }
 }
 
@@ -116,8 +119,8 @@ class PythonCompiler extends CodeCompiler {
         this.indentationLevel = 0;
     }
 
-    public void compile(Map<String, BlockNode> code) throws IOException {
-        handleNode(code.get("main"));
+    public void compile(Map<String, FunctionRepr> code) throws IOException {
+        handleNode(code.get("main").getBody());
         close();
     }
 
