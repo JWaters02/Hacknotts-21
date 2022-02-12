@@ -24,13 +24,36 @@
         <properties>
           <floatable value="true"/>
           <foreground color="-13816531"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
           <name value=""/>
           <opaque value="false"/>
           <orientation value="1"/>
           <preferredSize width="100" height="0"/>
         </properties>
         <border type="line"/>
-        <children/>
+        <children>
+          <component id="d9fc8" class="javax.swing.JButton" binding="btnNewFunction">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="New Function"/>
+            </properties>
+          </component>
+          <component id="baaf0" class="javax.swing.JList" binding="lsBlocks" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <focusable value="false"/>
+              <opaque value="false"/>
+              <preferredSize width="0" height="0"/>
+            </properties>
+          </component>
+        </children>
       </toolbar>
       <scrollpane id="198c1" binding="spnCodeCreator" custom-create="true">
         <constraints border-constraint="Center"/>
@@ -39,9 +62,19 @@
         <children>
           <grid id="7a1e3" binding="pnlCodeCreator" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints/>
-            <properties/>
+            <properties>
+              <foreground color="-10790053"/>
+              <opaque value="false"/>
+            </properties>
             <border type="line"/>
-            <children/>
+            <children>
+              <component id="2ec29" class="javax.swing.JButton" binding="btnTestDrag" custom-create="true">
+                <constraints border-constraint="North"/>
+                <properties>
+                  <text value="Button"/>
+                </properties>
+              </component>
+            </children>
           </grid>
         </children>
       </scrollpane>
@@ -59,6 +92,7 @@
               <editable value="false"/>
               <opaque value="false"/>
               <preferredSize width="0" height="100"/>
+              <selectionColor color="-10790053"/>
               <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsad&#10;sadas&#10;dsad&#10;"/>
               <wrapStyleWord value="false"/>
             </properties>
