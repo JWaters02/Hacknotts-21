@@ -16,8 +16,8 @@ class PythonCompiler extends CodeCompiler {
         this.indentationLevel = 0;
     }
 
-    public void compile(Map<String, BlockNode> code) throws IOException {
-        handleNode(code.get("main"));
+    public void compile(Map<String, FunctionRepr> code) throws IOException {
+        handleNode(code.get("main").getBody());
         close();
     }
 

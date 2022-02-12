@@ -27,7 +27,12 @@ public class MainForm {
     private JTextField txtfReadInput;
     private JTextField txtfPrint;
     private JTextField txtfDefineVar;
-    private JButton btnTestDrag;
+    private JButton btnSaveCode;
+    private JButton btnLoadCode;
+    private JTextField txtfIf;
+    private JTextField txtfElse;
+    private JTextField txtfWhile;
+    private JTextField txtfOperation;
 
     public MainForm() {
         btnNewFunction.addActionListener(new ActionListener() {
@@ -56,29 +61,26 @@ public class MainForm {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         spnCodeOutput = new JScrollPane();
         spnCodeCreator = new JScrollPane();
         txtCodeOutput = new JTextArea();
         tbBlockStore = new JToolBar();
         tbMain = new JToolBar();
         pnlCodeCreator = new JPanel();
-        btnTestDrag = new JButton();
         txtfSetVar = new JTextField();
         txtfReadInput = new JTextField();
         txtfPrint = new JTextField();
         txtfDefineVar = new JTextField();
+        btnSaveCode = new JButton();
+        btnLoadCode = new JButton();
+        txtfIf = new JTextField();
+        txtfElse = new JTextField();
+        txtfWhile = new JTextField();
+        txtfOperation = new JTextField();
 
         spnCodeOutput.setPreferredSize(new Dimension(200, 200));
-
-//        addDraggableListItem(pnlCodeCreator, lsBlocks, btnTestDrag);
     }
 
-    /**
-     * Use JSwing library to implement draggable list items from lsBlocks into pnlCodeCreator
-     * @param pnlCodeCreator
-     * @return
-     */
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
         TransferHandler handler = new TransferHandler("text");
@@ -94,7 +96,7 @@ public class MainForm {
     /**
      * Since JPanel does not natively support drag and drop, we need to implement it ourselves
      */
-    private class DragMouseAdapter extends MouseAdapter {
+    private static class DragMouseAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
             var c = (JComponent) e.getSource();
             var handler = c.getTransferHandler();

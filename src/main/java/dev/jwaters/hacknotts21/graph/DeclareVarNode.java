@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
@@ -11,7 +12,9 @@ import java.util.Collections;
 import java.util.List;
 
 public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
+    @Expose
     private String name = "";
+    @Expose
     @Nullable
     private Type type;
 
@@ -20,12 +23,12 @@ public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
     }
 
     @Override
-    public @Nullable Type getExpectedChildType(GraphNode<?> child) {
+    public @Nullable Type getExpectedChildType(GraphNode<?> child, FunctionRepr containingFunc) {
         return null;
     }
 
     @Override
-    public Type getReturnType() {
+    public Type getReturnType(FunctionRepr containingFunc) {
         return VoidType.INSTANCE;
     }
 
@@ -69,7 +72,7 @@ public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
     }
 
     @Nullable
-    public static DeclareVarNode resolveVariable(String name, GraphNode<?> atNode) {
+    public static DeclareVarNode resolveVariable(String name, GraphNode<?> atNode, FunctionRepr containingFunc) {
         for (; atNode != null; atNode = atNode.getParent()) {
             GraphNode<?> parent = atNode.getParent();
             if (parent == null) {
@@ -91,6 +94,11 @@ public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
                         break;
                     }
                 }
+            }
+        }
+        for (DeclareVarNode param : containingFunc.getParams()) {
+            if (param.getName().equals(name)) {
+                return param;
             }
         }
         return null;
