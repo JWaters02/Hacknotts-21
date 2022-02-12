@@ -3,7 +3,12 @@ package dev.jwaters.hacknotts21;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.crypto.Data;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -33,6 +38,8 @@ public class MainForm {
     private JTextField txtfElse;
     private JTextField txtfWhile;
     private JTextField txtfOperation;
+    private JButton btnSaveBlocks;
+    private JButton btnLoadBlocks;
 
     public MainForm() {
         btnNewFunction.addActionListener(new ActionListener() {
@@ -41,13 +48,79 @@ public class MainForm {
                 txtCodeOutput.setText("blah");
             }
         });
+
+        btnSaveCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
+                fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        Files.write(file.toPath(), txtCodeOutput.getText().getBytes());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnLoadCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
+                fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnSaveBlocks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        Files.write(file.toPath(), "stuff".getBytes());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        btnLoadBlocks.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
         // Create list of JTextFields from the txtf's
         List<JTextField> txtfList = new ArrayList<>();
-        txtfList.add(txtfDefineVar);
-        txtfList.add(txtfSetVar);
-        txtfList.add(txtfReadInput);
-        txtfList.add(txtfPrint);
+        txtfList.add(txtfDefineVar); txtfList.add(txtfSetVar); txtfList.add(txtfReadInput); txtfList.add(txtfPrint);
+        txtfList.add(txtfIf); txtfList.add(txtfElse); txtfList.add(txtfWhile); txtfList.add(txtfOperation);
         addDraggableListItem(pnlCodeCreator, txtfList);
+
     }
 
     public static void main(String[] args) {
@@ -84,7 +157,8 @@ public class MainForm {
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
         TransferHandler handler = new TransferHandler("text");
-        pnlCodeCreator.setTransferHandler(handler);
+        DragTransferHandler dragHandler = new DragTransferHandler();
+        pnlCodeCreator.setTransferHandler(dragHandler);
         pnlCodeCreator.addMouseListener(listener);
         for (JTextField txtf : txtfList) {
             txtf.addMouseListener(listener);
@@ -93,14 +167,65 @@ public class MainForm {
         }
     }
 
-    /**
-     * Since JPanel does not natively support drag and drop, we need to implement it ourselves
-     */
     private static class DragMouseAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
             var c = (JComponent) e.getSource();
             var handler = c.getTransferHandler();
             handler.exportAsDrag(c, e, TransferHandler.COPY);
+        }
+    }
+
+    // Make new TransferHandler class that overrides canImport and importData functions
+    private static class DragTransferHandler extends TransferHandler {
+        @Override
+        public boolean canImport(TransferSupport support) {
+            if (!support.isDrop()) {
+                return false;
+            }
+            return isStringDataSupported(support);
+        }
+
+        protected boolean isStringDataSupported(TransferSupport support) {
+            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) return true;
+            DataFlavor[] flavors = support.getDataFlavors();
+            for (DataFlavor dataFlavor : flavors) {
+                if (dataFlavor.getRepresentationClass() == String.class) return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean importData(TransferSupport support) {
+            if (!canImport(support)) {
+                return false;
+            }
+
+            String line;
+            try {
+                line = getStringData(support);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            JPanel pnlCodeCreator = (JPanel) support.getComponent();
+            JTextField txtf = new JTextField(line);
+            pnlCodeCreator.add(txtf);
+            return true;
+        }
+
+        protected String getStringData(TransferSupport support)
+                throws UnsupportedFlavorException, IOException {
+            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                return (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+            }
+            DataFlavor[] flavors = support.getDataFlavors();
+            for (DataFlavor dataFlavor : flavors) {
+                if (dataFlavor.getRepresentationClass() == String.class) {
+                    return (String) support.getTransferable().getTransferData(dataFlavor);
+                }
+            }
+            return "";
         }
     }
 

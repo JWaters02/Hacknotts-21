@@ -27,6 +27,7 @@
               <hideActionText value="false"/>
               <horizontalAlignment value="0"/>
               <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
               <text value="New Function"/>
             </properties>
           </component>
@@ -39,6 +40,8 @@
               <hideActionText value="false"/>
               <horizontalAlignment value="0"/>
               <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
+              <selected value="false"/>
               <text value="Save Code"/>
             </properties>
           </component>
@@ -51,7 +54,36 @@
               <hideActionText value="false"/>
               <horizontalAlignment value="0"/>
               <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
               <text value="Load Code"/>
+            </properties>
+          </component>
+          <component id="347c5" class="javax.swing.JButton" binding="btnSaveBlocks">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
+              <selected value="false"/>
+              <text value="Save Blocks"/>
+            </properties>
+          </component>
+          <component id="a441b" class="javax.swing.JButton" binding="btnLoadBlocks">
+            <constraints/>
+            <properties>
+              <actionCommand value="Load Blocks"/>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
+              <text value="Load Blocks"/>
             </properties>
           </component>
         </children>
