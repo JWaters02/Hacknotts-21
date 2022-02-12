@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.List;
 
-public abstract sealed class GraphNode<C extends JComponent> permits BlockNode, DeclareVarNode, GetVarNode, IfElseNode, IfNode, InputNode, IntegerLiteralNode, PrintNode, SetVarNode, TwoNumberOperationNode, WhileNode {
+public abstract sealed class GraphNode<C extends JComponent> permits BlockNode, DeclareVarNode, GetVarNode, IfElseNode, IfNode, InputNode, IntegerLiteralNode, TwoBooleanOperationNode, PrintNode, SetVarNode, TwoNumberOperationNode, WhileNode {
     @Nullable
     private final GraphNode<?> parent;
 
