@@ -1,6 +1,7 @@
 package dev.jwaters.hacknotts21;
 
 import dev.jwaters.hacknotts21.graph.*;
+import dev.jwaters.hacknotts21.MainForm;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,6 +25,8 @@ public abstract class CodeCompiler {
                 ifnode.getBody().getChildren().add(declarenode);
                 blocknode.getChildren().add(ifnode);
                 pythonCompiler.compile(code);
+                MainForm mainForm = new MainForm();
+                mainForm.outputCompiledCode(outFile);
             }
         }
     }

@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,10 @@ public class MainForm {
     private JScrollPane spnCodeCreator;
     private JScrollPane spnCodeOutput;
     private JButton btnNewFunction;
-    private JList lsBlocks;
+    private JTextField txtfSetVar;
+    private JTextField txtfReadInput;
+    private JTextField txtfPrint;
+    private JTextField txtfDefineVar;
     private JButton btnTestDrag;
 
     public MainForm() {
@@ -30,7 +36,13 @@ public class MainForm {
                 txtCodeOutput.setText("blah");
             }
         });
-        addDraggableListItem(pnlCodeCreator, lsBlocks, btnTestDrag);
+        // Create list of JTextFields from the txtf's
+        List<JTextField> txtfList = new ArrayList<>();
+        txtfList.add(txtfDefineVar);
+        txtfList.add(txtfSetVar);
+        txtfList.add(txtfReadInput);
+        txtfList.add(txtfPrint);
+        addDraggableListItem(pnlCodeCreator, txtfList);
     }
 
     public static void main(String[] args) {
@@ -51,33 +63,15 @@ public class MainForm {
         tbBlockStore = new JToolBar();
         tbMain = new JToolBar();
         pnlCodeCreator = new JPanel();
-        lsBlocks = new JList();
         btnTestDrag = new JButton();
+        txtfSetVar = new JTextField();
+        txtfReadInput = new JTextField();
+        txtfPrint = new JTextField();
+        txtfDefineVar = new JTextField();
 
-        // Set padding for lsBlocks
-        lsBlocks.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         spnCodeOutput.setPreferredSize(new Dimension(200, 200));
 
-        // Make new list model to store the draggable options
-        makeListModel(lsBlocks);
-
 //        addDraggableListItem(pnlCodeCreator, lsBlocks, btnTestDrag);
-    }
-
-    /**
-     * Make a new list model with all the block types
-     * @param lsBlocks the list to add the block types to
-     */
-    private void makeListModel(JList lsBlocks) {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement("Define Variable");
-        listModel.addElement("Set Variable");
-        listModel.addElement("Read In");
-        listModel.addElement("Print");
-        listModel.addElement("If");
-        listModel.addElement("Else");
-        listModel.addElement("While");
-        lsBlocks.setModel(listModel);
     }
 
     /**
@@ -85,17 +79,17 @@ public class MainForm {
      * @param pnlCodeCreator
      * @return
      */
-    public void addDraggableListItem(JPanel pnlCodeCreator, JList lsBlocks, JButton btnTestDrag) {
+    public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
-        pnlCodeCreator.addMouseListener(listener);
-        btnTestDrag.addMouseListener(listener);
-        lsBlocks.setFocusable(false);
         TransferHandler handler = new TransferHandler("text");
         pnlCodeCreator.setTransferHandler(handler);
-        btnTestDrag.setTransferHandler(handler);
-        lsBlocks.setTransferHandler(handler);
+        pnlCodeCreator.addMouseListener(listener);
+        for (JTextField txtf : txtfList) {
+            txtf.addMouseListener(listener);
+            txtf.setFocusable(false);
+            txtf.setTransferHandler(handler);
+        }
     }
-
 
     /**
      * Since JPanel does not natively support drag and drop, we need to implement it ourselves
@@ -135,5 +129,16 @@ public class MainForm {
 
     public JPanel getPnlCodeCreator() {
         return pnlCodeCreator;
+    }
+
+    public void outputCompiledCode(File file) {
+        String code = "";
+        // Read text from file into code
+        try {
+            code = new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        txtCodeOutput.setText(code);
     }
 }

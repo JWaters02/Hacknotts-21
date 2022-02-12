@@ -17,7 +17,20 @@
           <preferredSize width="0" height="25"/>
         </properties>
         <border type="line"/>
-        <children/>
+        <children>
+          <component id="d9fc8" class="javax.swing.JButton" binding="btnNewFunction">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="New Function"/>
+            </properties>
+          </component>
+        </children>
       </toolbar>
       <toolbar id="6723" binding="tbBlockStore" custom-create="true">
         <constraints border-constraint="West"/>
@@ -32,25 +45,43 @@
         </properties>
         <border type="line"/>
         <children>
-          <component id="d9fc8" class="javax.swing.JButton" binding="btnNewFunction">
-            <constraints/>
-            <properties>
-              <alignmentY value="0.5"/>
-              <borderPainted value="false"/>
-              <contentAreaFilled value="false"/>
-              <hideActionText value="false"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <text value="New Function"/>
-            </properties>
-          </component>
-          <component id="baaf0" class="javax.swing.JList" binding="lsBlocks" custom-create="true">
+          <component id="5b1ea" class="javax.swing.JTextField" binding="txtfDefineVar" custom-create="true">
             <constraints/>
             <properties>
               <dragEnabled value="true"/>
+              <editable value="false"/>
               <focusable value="false"/>
               <opaque value="false"/>
               <preferredSize width="0" height="0"/>
+              <text value="Define Variable"/>
+            </properties>
+          </component>
+          <component id="7341a" class="javax.swing.JTextField" binding="txtfSetVar" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <enabled value="true"/>
+              <opaque value="false"/>
+              <text value="Set Variable"/>
+            </properties>
+          </component>
+          <component id="4e066" class="javax.swing.JTextField" binding="txtfReadInput" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Read Input"/>
+            </properties>
+          </component>
+          <component id="fe4bc" class="javax.swing.JTextField" binding="txtfPrint" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Print"/>
             </properties>
           </component>
         </children>
@@ -67,14 +98,7 @@
               <opaque value="false"/>
             </properties>
             <border type="line"/>
-            <children>
-              <component id="2ec29" class="javax.swing.JButton" binding="btnTestDrag" custom-create="true">
-                <constraints border-constraint="North"/>
-                <properties>
-                  <text value="Button"/>
-                </properties>
-              </component>
-            </children>
+            <children/>
           </grid>
         </children>
       </scrollpane>
