@@ -30,6 +30,30 @@
               <text value="New Function"/>
             </properties>
           </component>
+          <component id="676f1" class="javax.swing.JButton" binding="btnSaveCode">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Save Code"/>
+            </properties>
+          </component>
+          <component id="41ca" class="javax.swing.JButton" binding="btnLoadCode">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Load Code"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
       <toolbar id="6723" binding="tbBlockStore" custom-create="true">
@@ -48,6 +72,7 @@
           <component id="5b1ea" class="javax.swing.JTextField" binding="txtfDefineVar" custom-create="true">
             <constraints/>
             <properties>
+              <caretPosition value="12"/>
               <dragEnabled value="true"/>
               <editable value="false"/>
               <focusable value="false"/>
@@ -82,6 +107,42 @@
               <editable value="false"/>
               <opaque value="false"/>
               <text value="Print"/>
+            </properties>
+          </component>
+          <component id="e120b" class="javax.swing.JTextField" binding="txtfIf" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="If Statement"/>
+            </properties>
+          </component>
+          <component id="37fd2" class="javax.swing.JTextField" binding="txtfElse" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Else Statement"/>
+            </properties>
+          </component>
+          <component id="3bbbb" class="javax.swing.JTextField" binding="txtfWhile" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="While Loop"/>
+            </properties>
+          </component>
+          <component id="5e84a" class="javax.swing.JTextField" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Operation"/>
             </properties>
           </component>
         </children>

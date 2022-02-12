@@ -27,6 +27,11 @@ public class MainForm {
     private JTextField txtfReadInput;
     private JTextField txtfPrint;
     private JTextField txtfDefineVar;
+    private JButton btnSaveCode;
+    private JButton btnLoadCode;
+    private JTextField txtfIf;
+    private JTextField txtfElse;
+    private JTextField txtfWhile;
     private JButton btnTestDrag;
 
     public MainForm() {
@@ -56,7 +61,6 @@ public class MainForm {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         spnCodeOutput = new JScrollPane();
         spnCodeCreator = new JScrollPane();
         txtCodeOutput = new JTextArea();
@@ -70,8 +74,6 @@ public class MainForm {
         txtfDefineVar = new JTextField();
 
         spnCodeOutput.setPreferredSize(new Dimension(200, 200));
-
-//        addDraggableListItem(pnlCodeCreator, lsBlocks, btnTestDrag);
     }
 
     /**
