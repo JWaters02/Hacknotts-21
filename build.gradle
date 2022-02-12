@@ -10,6 +10,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
+}
+
 ext {
     junitVersion = '5.8.1'
 }
