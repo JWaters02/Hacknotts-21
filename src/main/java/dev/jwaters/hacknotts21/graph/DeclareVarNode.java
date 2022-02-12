@@ -1,14 +1,16 @@
 package dev.jwaters.hacknotts21.graph;
 
+import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public final class DeclareVarNode extends GraphNode<JPanel> {
+public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
     private String name = "";
     @Nullable
     private Type type;
@@ -28,18 +30,20 @@ public final class DeclareVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
-        return null;
+    public Panel createComponent() {
+         return new Panel();
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
-
+    public void readFromComponent(Panel component) throws UserInputException {
+        this.name = component.nameField.getText();
+        this.type = component.typeChooser.getType();
     }
 
     @Override
-    public void writeToComponent(JPanel component) {
-
+    public void writeToComponent(Panel component) {
+        component.nameField.setText(name);
+        component.typeChooser.setType(type);
     }
 
     @Override
@@ -90,5 +94,18 @@ public final class DeclareVarNode extends GraphNode<JPanel> {
             }
         }
         return null;
+    }
+
+    public static class Panel extends JPanel {
+        private final HintTextField nameField = new HintTextField("Name");
+        private final Type.TypeChooser typeChooser = new Type.TypeChooser(false);
+
+        public Panel() {
+            setLayout(new FlowLayout());
+            add(new JLabel("Declare "));
+            add(nameField);
+            add(new JLabel(" as "));
+            add(typeChooser);
+        }
     }
 }

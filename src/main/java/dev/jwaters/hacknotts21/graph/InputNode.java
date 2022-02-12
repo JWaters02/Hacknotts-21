@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
 
-public final class InputNode extends GraphNode<JPanel> {
+public final class InputNode extends GraphNode<JLabel> {
     public InputNode(@Nullable GraphNode<?> parent) {
         super(parent);
     }
@@ -24,18 +24,16 @@ public final class InputNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
-        return null;
+    public JLabel createComponent() {
+        return new JLabel("Get User Input");
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
-
+    public void readFromComponent(JLabel component) throws UserInputException {
     }
 
     @Override
-    public void writeToComponent(JPanel component) {
-
+    public void writeToComponent(JLabel component) {
     }
 
     @Override

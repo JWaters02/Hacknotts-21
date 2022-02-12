@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
 
-public final class IntegerLiteralNode extends GraphNode<JPanel> {
+public final class IntegerLiteralNode extends GraphNode<JSpinner> {
     private int value;
 
     public int getValue() {
@@ -34,18 +34,22 @@ public final class IntegerLiteralNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
-        return null;
+    public JSpinner createComponent() {
+        return new JSpinner();
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
-
+    public void readFromComponent(JSpinner component) throws UserInputException {
+        Integer value = (Integer) component.getValue();
+        if (value == null) {
+            throw new UserInputException(component);
+        }
+        this.value = value;
     }
 
     @Override
-    public void writeToComponent(JPanel component) {
-
+    public void writeToComponent(JSpinner component) {
+        component.setValue(value);
     }
 
     @Override

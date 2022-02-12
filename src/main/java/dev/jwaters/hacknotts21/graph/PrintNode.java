@@ -6,7 +6,6 @@ import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public final class PrintNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
+    public void readFromComponent(JPanel component) throws UserInputException {
 
     }
 
