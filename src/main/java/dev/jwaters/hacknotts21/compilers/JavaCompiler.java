@@ -17,11 +17,6 @@ class JavaCompiler extends CodeCompiler {
         this.indentationLevel = 0;
     }
 
-    public void compile(Map<String, FunctionRepr> code) throws IOException {
-        handleNode(code.get("main").getBody());
-        close();
-    }
-
     @Override
     void declareVar(DeclareVarNode node) throws IOException {
         Type type = node.getType();

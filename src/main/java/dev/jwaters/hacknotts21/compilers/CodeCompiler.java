@@ -1,11 +1,13 @@
 package dev.jwaters.hacknotts21.compilers;
 
+import dev.jwaters.hacknotts21.DnDSerde;
 import dev.jwaters.hacknotts21.MainForm;
 import dev.jwaters.hacknotts21.graph.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 enum Language {
@@ -14,7 +16,7 @@ enum Language {
 }
 
 public abstract class CodeCompiler {
-    public static void compile(Map<String, FunctionRepr> code, Language language, File outFile) throws IOException {
+    public static void compile(Collection<FunctionRepr> code, Language language, File outFile) throws IOException {
         switch (language) {
             case PYTHON -> {
                 PythonCompiler pythonCompiler = new PythonCompiler(outFile);
@@ -25,8 +27,13 @@ public abstract class CodeCompiler {
                 javaCompiler.compile(code);
             }
         }
-        MainForm mainForm = new MainForm();
-        mainForm.outputCompiledCode(outFile);
+//        MainForm mainForm = new MainForm();
+//        mainForm.outputCompiledCode(outFile);
+    }
+
+    public void compile(Collection<FunctionRepr> code) throws IOException {
+        handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
+        close();
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
@@ -85,7 +92,7 @@ public abstract class CodeCompiler {
 
     abstract void close() throws IOException;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        var blocknode = new BlockNode(null);
 //
 //        var declare = new DeclareVarNode(blocknode);
@@ -118,6 +125,10 @@ public abstract class CodeCompiler {
 //        ifnode.getBody().getChildren().add(setvar);
 //        blocknode.getChildren().add(ifnode);
 //        compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
+
+        var functions = DnDSerde.readFromFile(new File("code.json"));
+
+        CodeCompiler.compile(functions, Language.PYTHON, new File("test.py"));
     }
 }
 
