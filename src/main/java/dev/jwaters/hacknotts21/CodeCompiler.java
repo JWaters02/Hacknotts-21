@@ -17,12 +17,12 @@ public abstract class CodeCompiler {
         switch (language) {
             case PYTHON -> {
                 PythonCompiler pythonCompiler = new PythonCompiler(outFile);
-                var declarenode = new DeclareVarNode();
+                var blocknode = new BlockNode(null);
+                var ifnode = new IfNode(blocknode);
+                var declarenode = new DeclareVarNode(ifnode);
                 declarenode.setName("testva");
-                var ifnode = new IfNode();
                 ifnode.setCondition(declarenode);
                 ifnode.getBody().getChildren().add(declarenode);
-                var blocknode = new BlockNode();
                 blocknode.getChildren().add(ifnode);
                 pythonCompiler.compile(Map.of("main", blocknode));
             }
