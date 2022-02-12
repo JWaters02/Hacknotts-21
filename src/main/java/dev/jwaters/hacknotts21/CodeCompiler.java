@@ -5,7 +5,6 @@ import dev.jwaters.hacknotts21.graph.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 enum Language {
@@ -46,6 +45,10 @@ public abstract class CodeCompiler {
             print(printnode);
         } else if (node instanceof SetVarNode setvarnode) {
             setVar(setvarnode);
+        } else if (node instanceof TwoNumberOperationNode booleanoperationnode) {
+            twoNumberbooleanOperation(booleanoperationnode);
+        } else if (node instanceof IntegerLiteralNode integerliteralnode) {
+            integerLiteral(integerliteralnode);
         } else if (node instanceof BlockNode blockNode) {
             for (GraphNode<?> child : blockNode.getChildren()) {
                 handleNode(child);
@@ -71,18 +74,30 @@ public abstract class CodeCompiler {
 
     abstract void setVar(SetVarNode node) throws IOException;
 
+    abstract void twoNumberbooleanOperation(TwoNumberOperationNode node) throws IOException;
+
+    abstract void integerLiteral(IntegerLiteralNode node) throws IOException;
+
     abstract void close() throws IOException;
 
     public static void main(String[] args) throws IOException {
         var blocknode = new BlockNode(null);
         var ifnode = new IfNode(blocknode);
-        var getvar = new GetVarNode(ifnode);
+        var getvar1 = new GetVarNode(ifnode);
+        getvar1.setVarName("test");
         var setvar = new SetVarNode(ifnode);
-        var input = new InputNode(setvar);
-        getvar.setVarName("test");
         setvar.setVarName("test");
-        setvar.setValue(input);
-        ifnode.setCondition(getvar);
+        var add = new TwoNumberOperationNode(setvar);
+        add.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.ADD);
+        var getvar2 = new GetVarNode(add);
+        getvar2.setVarName("test");
+        var literal = new IntegerLiteralNode(add);
+        literal.setValue(1);
+
+        add.setLeft(getvar2);
+        add.setRight(literal);
+        setvar.setValue(add);
+        ifnode.setCondition(getvar1);
         ifnode.getBody().getChildren().add(setvar);
         blocknode.getChildren().add(ifnode);
         compile(Map.of("main", blocknode), Language.PYTHON, new File("test.py"));
@@ -186,6 +201,32 @@ class PythonCompiler extends CodeCompiler {
         writer.write(node.getVarName());
         writer.write(" = ");
         handleNode(node.getValue());
+    }
+
+    @Override
+    void twoNumberbooleanOperation(TwoNumberOperationNode node) throws IOException {
+        handleNode(node.getLeft());
+
+        switch (node.getOperation()) {
+            case ADD -> writer.write(" + ");
+            case SUBTRACT -> writer.write(" - ");
+            case MULTIPLY -> writer.write(" * ");
+            case DIVIDE -> writer.write(" / ");
+            case MODULUS -> writer.write(" % ");
+            case EQUAL -> writer.write(" == ");
+            case NOT_EQUAL -> writer.write(" != ");
+            case GREATER_THAN -> writer.write(" > ");
+            case LESS_THAN -> writer.write(" < ");
+            case GREATER_THAN_OR_EQUAL -> writer.write(" >= ");
+            case LESS_THAN_OR_EQUAL -> writer.write(" <= ");
+        }
+
+        handleNode(node.getRight());
+    }
+
+    @Override
+    void integerLiteral(IntegerLiteralNode node) throws IOException {
+        writer.write(String.format("%d", node.getValue()));
     }
 
     @Override
