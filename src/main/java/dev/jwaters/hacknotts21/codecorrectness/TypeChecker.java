@@ -18,7 +18,7 @@ public class TypeChecker {
 
             if (
                 // dont check on void types
-                child.getReturnType() == VoidType.INSTANCE ||
+                child.getReturnType() != VoidType.INSTANCE &&
                 !Objects.equals(child.getReturnType(), node.getExpectedChildType(child)
             )) return new Pair<>(node, String.format("expected %s got %s", node.getExpectedChildType(child), child.getReturnType()));
 

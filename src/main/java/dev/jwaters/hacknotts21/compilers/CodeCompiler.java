@@ -1,7 +1,9 @@
 package dev.jwaters.hacknotts21.compilers;
 
 import dev.jwaters.hacknotts21.MainForm;
+import dev.jwaters.hacknotts21.codecorrectness.TypeChecker;
 import dev.jwaters.hacknotts21.graph.*;
+import dev.jwaters.hacknotts21.type.IntType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -87,9 +89,14 @@ public abstract class CodeCompiler {
 
     public static void main(String[] args) throws IOException {
         var blocknode = new BlockNode(null);
+
+        var declare = new DeclareVarNode(blocknode);
+        declare.setName("test");
+        declare.setType(IntType.INSTANCE);
+
         var ifnode = new IfNode(blocknode);
-        var condition = new TwoBooleanOperationNode(ifnode);
-        condition.setOperation(TwoBooleanOperationNode.TwoBooleanOperationEnum.EQUAL);
+        var condition = new TwoNumberOperationNode(ifnode);
+        condition.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.EQUAL);
         var getvar1 = new GetVarNode(condition);
         getvar1.setVarName("test");
         var literal1 = new IntegerLiteralNode(condition);
@@ -113,6 +120,8 @@ public abstract class CodeCompiler {
         ifnode.getBody().getChildren().add(setvar);
         blocknode.getChildren().add(ifnode);
         compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
+
+        System.out.println(TypeChecker.isValid(blocknode));
     }
 }
 
