@@ -6,6 +6,8 @@ import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class WhileNode extends GraphNode<JPanel> {
@@ -49,7 +51,7 @@ public final class WhileNode extends GraphNode<JPanel> {
 
     @Override
     public List<GraphNode<?>> getChildren() {
-        return condition != null ? List.of(condition, body) : List.of(body);
+        return Arrays.asList(condition, body);
     }
 
     public void setCondition(@Nullable GraphNode<?> condition) {

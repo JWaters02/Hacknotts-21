@@ -6,6 +6,8 @@ import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class PrintNode extends GraphNode<JPanel> {
@@ -43,7 +45,7 @@ public final class PrintNode extends GraphNode<JPanel> {
 
     @Override
     public List<GraphNode<?>> getChildren() {
-        return value != null ? List.of(value) : List.of();
+        return Collections.singletonList(value);
     }
 
     @Nullable
