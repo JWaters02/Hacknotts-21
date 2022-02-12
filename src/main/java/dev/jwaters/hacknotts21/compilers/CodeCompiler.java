@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.compilers;
 
+import dev.jwaters.hacknotts21.MainForm;
 import dev.jwaters.hacknotts21.graph.*;
 
 import java.io.File;
@@ -24,6 +25,8 @@ public abstract class CodeCompiler {
                 javaCompiler.compile(code);
             }
         }
+        MainForm mainForm = new MainForm();
+        mainForm.outputCompiledCode(outFile);
     }
 
     void handleNode(GraphNode<?> node) throws IOException {

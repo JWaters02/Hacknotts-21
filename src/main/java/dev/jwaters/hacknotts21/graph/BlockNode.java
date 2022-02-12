@@ -27,17 +27,32 @@ public final class BlockNode extends GraphNode<JPanel> {
 
     @Override
     public JPanel createComponent() {
-        return null;
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        for (GraphNode<?> child : children) {
+            JComponent childComponent = child.createComponent();
+            childComponent.putClientProperty("node", child);
+            panel.add(childComponent);
+        }
+        return panel;
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
-
+    public void readFromComponent(JPanel component) throws UserInputException {
+        for (int i = 0; i < children.size(); i++) {
+            GraphNode<?> child = children.get(i);
+            JComponent childComponent = (JComponent) component.getComponent(i);
+            doReadFromComponent(child, childComponent);
+        }
     }
 
     @Override
     public void writeToComponent(JPanel component) {
-
+        for (int i = 0; i < children.size(); i++) {
+            GraphNode<?> child = children.get(i);
+            JComponent childComponent = (JComponent) component.getComponent(i);
+            doWriteToComponent(child, childComponent);
+        }
     }
 
     @Override

@@ -1,26 +1,23 @@
 package dev.jwaters.hacknotts21;
 
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class DnDTest extends JFrame {
+    private JTextField field;
+    private JButton button;
 
     public DnDTest() {
         initUI();
     }
 
     private void initUI() {
-        var icon1 = new ImageIcon("src/resources/icons/move_steps_block.png");
-        var icon2 = new ImageIcon("src/resources/icons/when_clicked_block.png");
-        var icon3 = new ImageIcon("src/resources/smile.png");
+
+        var icon1 = new ImageIcon("src/main/resources/icons/move_steps_block.png");
+        var icon2 = new ImageIcon("src/main/resources/icons/when_clicked_block.png");
+        var icon3 = new ImageIcon("src/main/resources/smile.png");
 
         var label1 = new JLabel(icon1, JLabel.CENTER);
         var label2 = new JLabel(icon2, JLabel.CENTER);

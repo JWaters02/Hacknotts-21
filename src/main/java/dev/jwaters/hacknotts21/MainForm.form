@@ -17,20 +17,74 @@
           <preferredSize width="0" height="25"/>
         </properties>
         <border type="line"/>
-        <children/>
+        <children>
+          <component id="d9fc8" class="javax.swing.JButton" binding="btnNewFunction">
+            <constraints/>
+            <properties>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="New Function"/>
+            </properties>
+          </component>
+        </children>
       </toolbar>
       <toolbar id="6723" binding="tbBlockStore" custom-create="true">
         <constraints border-constraint="West"/>
         <properties>
           <floatable value="true"/>
           <foreground color="-13816531"/>
+          <margin top="0" left="0" bottom="0" right="0"/>
           <name value=""/>
           <opaque value="false"/>
           <orientation value="1"/>
           <preferredSize width="100" height="0"/>
         </properties>
         <border type="line"/>
-        <children/>
+        <children>
+          <component id="5b1ea" class="javax.swing.JTextField" binding="txtfDefineVar" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <focusable value="false"/>
+              <opaque value="false"/>
+              <preferredSize width="0" height="0"/>
+              <text value="Define Variable"/>
+            </properties>
+          </component>
+          <component id="7341a" class="javax.swing.JTextField" binding="txtfSetVar" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <enabled value="true"/>
+              <opaque value="false"/>
+              <text value="Set Variable"/>
+            </properties>
+          </component>
+          <component id="4e066" class="javax.swing.JTextField" binding="txtfReadInput" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Read Input"/>
+            </properties>
+          </component>
+          <component id="fe4bc" class="javax.swing.JTextField" binding="txtfPrint" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <opaque value="false"/>
+              <text value="Print"/>
+            </properties>
+          </component>
+        </children>
       </toolbar>
       <scrollpane id="198c1" binding="spnCodeCreator" custom-create="true">
         <constraints border-constraint="Center"/>
@@ -39,7 +93,10 @@
         <children>
           <grid id="7a1e3" binding="pnlCodeCreator" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints/>
-            <properties/>
+            <properties>
+              <foreground color="-10790053"/>
+              <opaque value="false"/>
+            </properties>
             <border type="line"/>
             <children/>
           </grid>
@@ -59,6 +116,7 @@
               <editable value="false"/>
               <opaque value="false"/>
               <preferredSize width="0" height="100"/>
+              <selectionColor color="-10790053"/>
               <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsad&#10;sadas&#10;dsad&#10;"/>
               <wrapStyleWord value="false"/>
             </properties>

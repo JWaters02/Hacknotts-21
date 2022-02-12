@@ -37,7 +37,7 @@ public final class SetVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
+    public void readFromComponent(JPanel component) throws UserInputException {
 
     }
 

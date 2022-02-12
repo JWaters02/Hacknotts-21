@@ -11,20 +11,21 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
-public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
+public abstract sealed class AbstractConditionNode extends GraphNode<AbstractConditionNode.Panel> permits IfNode, WhileNode {
+    private final String conditionTypeName;
     private GraphNode<?> condition = new BooleanLiteralNode(this);
-    private final BlockNode ifBody = new BlockNode(this);
-    private final BlockNode elseBody = new BlockNode(this);
+    private final BlockNode body = new BlockNode(this);
 
-    public IfElseNode(@Nullable GraphNode<?> parent) {
+    public AbstractConditionNode(@Nullable GraphNode<?> parent, String conditionTypeName) {
         super(parent);
+        this.conditionTypeName = conditionTypeName;
     }
 
     @Override
     public @Nullable Type getExpectedChildType(GraphNode<?> child) {
         if (child == condition) {
             return BooleanType.INSTANCE;
-        } else if (child == ifBody || child == elseBody) {
+        } else if (child == body) {
             return VoidType.INSTANCE;
         }
         return null;
@@ -37,66 +38,55 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
 
     @Override
     public Panel createComponent() {
-        return new Panel(condition.createComponent(), ifBody.createComponent(), elseBody.createComponent());
+        return new Panel(conditionTypeName, condition.createComponent(), body.createComponent());
     }
 
     @Override
     public void readFromComponent(Panel component) throws UserInputException {
         doReadFromComponent(this.condition, component.condition);
-        doReadFromComponent(this.ifBody, component.ifBody);
-        doReadFromComponent(this.elseBody, component.elseBody);
+        doReadFromComponent(this.body, component.body);
     }
 
     @Override
     public void writeToComponent(Panel component) {
         doWriteToComponent(this.condition, component.condition);
-        doWriteToComponent(this.ifBody, component.ifBody);
-        doWriteToComponent(this.elseBody, component.elseBody);
+        doWriteToComponent(this.body, component.body);
     }
 
     @Override
-    public List<GraphNode<?>> getChildren() {
-        return Arrays.asList(condition, ifBody, elseBody);
-    }
-
-    public GraphNode<?> getCondition() {
-        return condition;
+    public List<@Nullable GraphNode<?>> getChildren() {
+        return Arrays.asList(condition, body);
     }
 
     public void setCondition(GraphNode<?> condition) {
         this.condition = condition;
     }
 
-    public BlockNode getIfBody() {
-        return ifBody;
+    public GraphNode<?> getCondition() {
+        return condition;
     }
 
-    public BlockNode getElseBody() {
-        return elseBody;
+    public BlockNode getBody() {
+        return body;
     }
 
     public static final class Panel extends JPanel {
         private final JComponent condition;
-        private final JComponent ifBody;
-        private final JComponent elseBody;
+        private final JComponent body;
 
-        public Panel(JComponent condition, JComponent ifBody, JComponent elseBody) {
+        public Panel(String conditionTypeName, JComponent condition, JComponent body) {
             this.condition = condition;
-            this.ifBody = ifBody;
-            this.elseBody = elseBody;
+            this.body = body;
 
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             JPanel conditionPanel = new JPanel();
             conditionPanel.setLayout(new FlowLayout());
-            conditionPanel.add(new JLabel("If "));
+            conditionPanel.add(new JLabel(conditionTypeName + " "));
             conditionPanel.add(condition);
             conditionPanel.add(new JLabel(":"));
             add(conditionPanel);
 
-            add(NodeUIUtils.wrapBody(ifBody));
-            add(new JLabel("Else:"));
-            add(NodeUIUtils.wrapBody(elseBody));
-
+            add(NodeUIUtils.wrapBody(body));
         }
     }
 }

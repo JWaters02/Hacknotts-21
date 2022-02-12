@@ -1,13 +1,15 @@
 package dev.jwaters.hacknotts21.graph;
 
+import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public final class GetVarNode extends GraphNode<JPanel> {
+public final class GetVarNode extends GraphNode<GetVarNode.Panel> {
     private String varName = "";
 
     public GetVarNode(@Nullable GraphNode<?> parent) {
@@ -29,18 +31,18 @@ public final class GetVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
-        return null;
+    public Panel createComponent() {
+        return new Panel();
     }
 
     @Override
-    public void readFromComponent(JPanel component) {
-
+    public void readFromComponent(Panel component) throws UserInputException {
+        this.varName = component.nameField.getText();
     }
 
     @Override
-    public void writeToComponent(JPanel component) {
-
+    public void writeToComponent(Panel component) {
+        component.nameField.setText(this.varName);
     }
 
     @Override
@@ -54,5 +56,15 @@ public final class GetVarNode extends GraphNode<JPanel> {
 
     public void setVarName(String varName) {
         this.varName = varName;
+    }
+
+    public static final class Panel extends JPanel {
+        private final HintTextField nameField = new HintTextField("Name");
+
+        public Panel() {
+            setLayout(new FlowLayout());
+            add(new JLabel("Get "));
+            add(nameField);
+        }
     }
 }
