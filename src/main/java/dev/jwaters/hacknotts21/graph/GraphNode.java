@@ -4,6 +4,7 @@ import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
 public abstract sealed class GraphNode<C extends JComponent> permits
         BlockNode,
@@ -36,4 +37,6 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public abstract C createComponent();
     public abstract void readFromComponent(C component);
     public abstract void writeToComponent(C component);
+
+    public abstract List<GraphNode<?>> getChildren();
 }

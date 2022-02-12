@@ -5,6 +5,7 @@ import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
 public final class SetVarNode extends GraphNode<JPanel> {
     private String varName = "";
@@ -42,6 +43,11 @@ public final class SetVarNode extends GraphNode<JPanel> {
     @Override
     public void writeToComponent(JPanel component) {
 
+    }
+
+    @Override
+    public List<GraphNode<?>> getChildren() {
+        return value != null ? List.of(value) : List.of();
     }
 
     public String getVarName() {

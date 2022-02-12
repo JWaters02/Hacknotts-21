@@ -40,6 +40,7 @@ public final class BlockNode extends GraphNode<JPanel> {
 
     }
 
+    @Override
     public List<GraphNode<?>> getChildren() {
         return children;
     }
