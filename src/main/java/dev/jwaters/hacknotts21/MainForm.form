@@ -69,15 +69,13 @@
         </properties>
         <border type="line"/>
         <children>
-          <component id="5b1ea" class="javax.swing.JTextField" binding="txtfDefineVar" custom-create="true">
+          <component id="b3f16" class="javax.swing.JTextField" binding="txtfDefineVar" custom-create="true">
             <constraints/>
             <properties>
-              <caretPosition value="12"/>
               <dragEnabled value="true"/>
               <editable value="false"/>
-              <focusable value="false"/>
+              <enabled value="true"/>
               <opaque value="false"/>
-              <preferredSize width="0" height="0"/>
               <text value="Define Variable"/>
             </properties>
           </component>
@@ -136,7 +134,7 @@
               <text value="While Loop"/>
             </properties>
           </component>
-          <component id="5e84a" class="javax.swing.JTextField" custom-create="true">
+          <component id="5e84a" class="javax.swing.JTextField" binding="txtfOperation" custom-create="true">
             <constraints/>
             <properties>
               <dragEnabled value="true"/>

@@ -32,7 +32,7 @@ public class MainForm {
     private JTextField txtfIf;
     private JTextField txtfElse;
     private JTextField txtfWhile;
-    private JButton btnTestDrag;
+    private JTextField txtfOperation;
 
     public MainForm() {
         btnNewFunction.addActionListener(new ActionListener() {
@@ -67,20 +67,20 @@ public class MainForm {
         tbBlockStore = new JToolBar();
         tbMain = new JToolBar();
         pnlCodeCreator = new JPanel();
-        btnTestDrag = new JButton();
         txtfSetVar = new JTextField();
         txtfReadInput = new JTextField();
         txtfPrint = new JTextField();
         txtfDefineVar = new JTextField();
+        btnSaveCode = new JButton();
+        btnLoadCode = new JButton();
+        txtfIf = new JTextField();
+        txtfElse = new JTextField();
+        txtfWhile = new JTextField();
+        txtfOperation = new JTextField();
 
         spnCodeOutput.setPreferredSize(new Dimension(200, 200));
     }
 
-    /**
-     * Use JSwing library to implement draggable list items from lsBlocks into pnlCodeCreator
-     * @param pnlCodeCreator
-     * @return
-     */
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
         TransferHandler handler = new TransferHandler("text");
@@ -96,7 +96,7 @@ public class MainForm {
     /**
      * Since JPanel does not natively support drag and drop, we need to implement it ourselves
      */
-    private class DragMouseAdapter extends MouseAdapter {
+    private static class DragMouseAdapter extends MouseAdapter {
         public void mousePressed(MouseEvent e) {
             var c = (JComponent) e.getSource();
             var handler = c.getTransferHandler();
