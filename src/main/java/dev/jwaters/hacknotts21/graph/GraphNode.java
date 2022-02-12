@@ -38,5 +38,5 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public abstract void readFromComponent(C component);
     public abstract void writeToComponent(C component);
 
-    public abstract List<GraphNode<?>> getChildren();
+    public abstract List<@Nullable GraphNode<?>> getChildren();
 }
