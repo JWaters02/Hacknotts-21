@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class IfElseNode implements GraphNode<JPanel> {
+public final class IfElseNode implements GraphNode<JPanel> {
     @Nullable
     private GraphNode<?> condition;
     private final BlockNode ifBody = new BlockNode();

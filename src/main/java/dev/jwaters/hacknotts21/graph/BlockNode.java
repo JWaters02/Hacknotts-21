@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockNode implements GraphNode<JPanel> {
+public final class BlockNode implements GraphNode<JPanel> {
     private final List<GraphNode<?>> children = new ArrayList<>();
 
     @Override

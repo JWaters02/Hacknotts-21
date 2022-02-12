@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class DeclareVarNode implements GraphNode<JPanel> {
+public final class DeclareVarNode implements GraphNode<JPanel> {
     private String name = "";
     @Nullable
     private Type type;
