@@ -57,8 +57,9 @@ public class MainForm {
         this.functions = functions;
         pnlCodeCreator.removeAll();
         for (FunctionRepr function : functions) {
-            FunctionRepr.Panel functionPanel = createFunctionJPanel();
+            FunctionRepr.Panel functionPanel = function.createComponent();
             function.writeToPanel(functionPanel);
+            pnlCodeCreator.add(functionPanel);
         }
         pnlCodeCreator.revalidate();
     }
@@ -66,8 +67,9 @@ public class MainForm {
     public MainForm() {
         // Listeners
         btnNewFunction.addActionListener(e -> {
-            functions.add(new FunctionRepr(""));
-            createFunctionJPanel();
+            FunctionRepr function = new FunctionRepr("");
+            functions.add(function);
+            pnlCodeCreator.add(function.createComponent());
             pnlCodeCreator.revalidate();
         });
         btnSaveCode.addActionListener(e -> {
@@ -270,12 +272,6 @@ public class MainForm {
             return fc.getSelectedFile();
         }
         return null;
-    }
-
-    private FunctionRepr.Panel createFunctionJPanel() {
-        FunctionRepr.Panel panel = new FunctionRepr.Panel();
-        pnlCodeCreator.add(panel);
-        return panel;
     }
 
     public void outputCompiledCode(File file) {

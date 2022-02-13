@@ -44,24 +44,38 @@ public class FunctionRepr {
         return body;
     }
 
-    public void readFromPanel(Panel panel) {
+    public Panel createComponent() {
+        return new Panel(body.createComponent());
+    }
+
+    public void readFromPanel(Panel panel) throws UserInputException {
         this.name = panel.nameField.getText();
+        this.body.readFromComponent(panel.body);
     }
 
     public void writeToPanel(Panel panel) {
         panel.nameField.setText(this.name);
+        this.body.writeToComponent(panel.body);
     }
 
     public static final class Panel extends JPanel {
         private final HintTextField nameField = new HintTextField("Name");
+        private final JPanel body;
 
-        public Panel() {
-            setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        public Panel(JPanel body) {
+            this.body = body;
+
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createLineBorder(Color.black));
             setOpaque(true);
             setBackground(Color.darkGray);
-            add(new JLabel("Function: "));
-            add(nameField);
+
+            JPanel headerPanel = new JPanel();
+            headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+            headerPanel.add(new JLabel("Function: "));
+            headerPanel.add(nameField);
+
+            add(body);
         }
     }
 }
