@@ -20,7 +20,7 @@ public class NodeUIUtils {
 
     @Nullable
     public static GraphNode<?> getAssociatedNode(JComponent component) {
-        for (; component != null; component = (JComponent) component.getParent()) {
+        for (; component != null && component.getParent() instanceof JComponent; component = (JComponent) component.getParent()) {
             GraphNode<?> node = getDirectAssociatedNode(component);
             if (node != null) {
                 return node;
@@ -35,7 +35,7 @@ public class NodeUIUtils {
 
     @Nullable
     public static FunctionRepr getAssociatedFunction(JComponent component) {
-        for (; component != null; component = (JComponent) component.getParent()) {
+        for (; component != null && component.getParent() instanceof JComponent; component = (JComponent) component.getParent()) {
             FunctionRepr function = (FunctionRepr) component.getClientProperty("functionRepr");
             if (function != null) {
                 return function;
@@ -47,8 +47,9 @@ public class NodeUIUtils {
     public static void traverseComponents(JComponent component, Consumer<JComponent> processor) {
         processor.accept(component);
         for (int i = 0; i < component.getComponentCount(); i++) {
-            JComponent child = (JComponent) component.getComponent(i);
-            traverseComponents(child, processor);
+            if (component.getComponent(i) instanceof JComponent child) {
+                traverseComponents(child, processor);
+            }
         }
     }
 
@@ -88,7 +89,7 @@ public class NodeUIUtils {
         if (node == null) {
             return;
         }
-        for (; component != null; component = (JComponent) component.getParent()) {
+        for (; component != null && component.getParent() instanceof JComponent; component = (JComponent) component.getParent()) {
             if (getDirectAssociatedNode(component) != null) {
                 break;
             }
