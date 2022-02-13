@@ -1,15 +1,17 @@
 package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
+import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public final class SetVarNode extends GraphNode<JPanel> {
+public final class SetVarNode extends GraphNode<SetVarNode.Panel> {
     @Expose
     private String varName = "";
     @Expose
@@ -35,18 +37,24 @@ public final class SetVarNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
-        return null;
+    public Panel createComponent() {
+        return new Panel(value == null ? null : value.createComponent());
     }
 
     @Override
-    public void readFromComponent(JPanel component) throws UserInputException {
-
+    public void readFromComponent(Panel component) throws UserInputException {
+        this.varName = component.varNameField.getText();
+        if (this.value != null) {
+            doReadFromComponent(this.value, component.value);
+        }
     }
 
     @Override
-    public void writeToComponent(JPanel component) {
-
+    public void writeToComponent(Panel component) {
+        component.varNameField.setText(varName);
+        if (value != null) {
+            doWriteToComponent(value, component.value);
+        }
     }
 
     @Override
@@ -69,5 +77,24 @@ public final class SetVarNode extends GraphNode<JPanel> {
 
     public void setValue(@Nullable GraphNode<?> value) {
         this.value = value;
+    }
+
+    public static final class Panel extends JPanel {
+        private final HintTextField varNameField = new HintTextField("Var name");
+        @Nullable
+        private final JComponent value;
+
+        public Panel(@Nullable JComponent value) {
+            this.value = value;
+
+            setLayout(new FlowLayout());
+            add(new JLabel("Set var: "));
+            add(varNameField);
+            add(new JLabel(" to "));
+
+            if (value != null) {
+                add(value);
+            }
+        }
     }
 }

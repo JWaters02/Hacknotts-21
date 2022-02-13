@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
@@ -13,7 +14,9 @@ import java.util.List;
 
 public abstract sealed class AbstractConditionNode extends GraphNode<AbstractConditionNode.Panel> permits IfNode, WhileNode {
     private final String conditionTypeName;
+    @Expose
     private GraphNode<?> condition = new BooleanLiteralNode(this);
+    @Expose
     private final BlockNode body = new BlockNode(this);
 
     public AbstractConditionNode(@Nullable GraphNode<?> parent, String conditionTypeName) {

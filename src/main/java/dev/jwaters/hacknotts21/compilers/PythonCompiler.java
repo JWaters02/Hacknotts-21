@@ -5,8 +5,6 @@ import dev.jwaters.hacknotts21.graph.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
 
 class PythonCompiler extends CodeCompiler {
     private final FileWriter writer;
@@ -131,7 +129,7 @@ class PythonCompiler extends CodeCompiler {
             case OR -> writer.write(" or ");
             case XOR -> writer.write(" ^ ");
             case EQUAL -> writer.write(" == ");
-            case NOT_EQAUL -> writer.write(" != ");
+            case NOT_EQUAL -> writer.write(" != ");
         }
 
         handleNode(node.getRight());
