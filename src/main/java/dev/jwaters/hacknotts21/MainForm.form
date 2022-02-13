@@ -74,6 +74,16 @@
               <text value="Load Blocks"/>
             </properties>
           </component>
+          <hspacer id="c93ed">
+            <constraints/>
+          </hspacer>
+          <hspacer id="6484c">
+            <constraints/>
+          </hspacer>
+          <component id="b8028" class="javax.swing.JComboBox" binding="cbSelectLang" custom-create="true">
+            <constraints/>
+            <properties/>
+          </component>
         </children>
       </toolbar>
       <toolbar id="6723" binding="tbBlockStore" custom-create="true">
@@ -247,7 +257,7 @@
               <requestFocusEnabled value="true"/>
               <rows value="10"/>
               <selectionColor color="-10790053"/>
-              <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsadhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh&#10;sadas&#10;dsad&#10;"/>
+              <text value=""/>
               <wrapStyleWord value="true"/>
             </properties>
             <clientProperties>
