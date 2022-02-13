@@ -79,6 +79,7 @@ public class DragTransferHandler extends TransferHandler {
                     replacedParent.add(child);
                 }
                 replacedParent.revalidate();
+                NodeUIUtils.onPropertyChanged(newComponent);
             }
         } catch (Exception e) {
             e.printStackTrace();

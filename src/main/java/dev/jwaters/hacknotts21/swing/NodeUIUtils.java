@@ -84,7 +84,7 @@ public class NodeUIUtils {
         });
     }
 
-    private static void onPropertyChanged(JComponent component) {
+    public static void onPropertyChanged(JComponent component) {
         GraphNode<?> node = getAssociatedNode(component);
         if (node == null) {
             return;
