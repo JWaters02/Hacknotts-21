@@ -6,7 +6,6 @@ import dev.jwaters.hacknotts21.type.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 
 class JavaCompiler extends CodeCompiler {
     private final FileWriter writer;
@@ -146,7 +145,7 @@ class JavaCompiler extends CodeCompiler {
             case OR -> writer.write(" || ");
             case XOR -> writer.write(" ^ ");
             case EQUAL -> writer.write(" == ");
-            case NOT_EQAUL -> writer.write(" != ");
+            case NOT_EQUAL -> writer.write(" != ");
         }
 
         handleNode(node.getRight());

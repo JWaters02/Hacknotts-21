@@ -33,8 +33,10 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
     }
 
     @Expose
+    @Nullable
     private GraphNode<?> left = new IntegerLiteralNode(this);
     @Expose
+    @Nullable
     private GraphNode<?> right = new IntegerLiteralNode(this);
     @Expose
     private TwoNumberOperationEnum operation;
@@ -43,19 +45,21 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
         super(parent);
     }
 
+    @Nullable
     public GraphNode<?> getLeft() {
         return left;
     }
 
-    public void setLeft(GraphNode<?> left) {
+    public void setLeft(@Nullable GraphNode<?> left) {
         this.left = left;
     }
 
+    @Nullable
     public GraphNode<?> getRight() {
         return right;
     }
 
-    public void setRight(GraphNode<?> right) {
+    public void setRight(@Nullable GraphNode<?> right) {
         this.right = right;
     }
 
@@ -82,13 +86,17 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
 
     @Override
     public Panel createComponent() {
-        return new Panel(left.createComponent(), operation.symbol, right.createComponent());
+        return new Panel(left == null ? null : left.createComponent(), operation.symbol, right == null ? null : right.createComponent());
     }
 
     @Override
     public void readFromComponent(Panel component) throws UserInputException {
-        doReadFromComponent(this.left, component.left);
-        doReadFromComponent(this.right, component.right);
+        if (left != null) {
+            doReadFromComponent(this.left, component.left);
+        }
+        if (right != null) {
+            doReadFromComponent(this.right, component.right);
+        }
     }
 
     @Override
@@ -103,17 +111,23 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
     }
 
     public static final class Panel extends JPanel {
+        @Nullable
         private final JComponent left;
+        @Nullable
         private final JComponent right;
 
-        public Panel(JComponent left, String operation, JComponent right) {
+        public Panel(@Nullable JComponent left, String operation, @Nullable JComponent right) {
             this.left = left;
             this.right = right;
 
             setLayout(new FlowLayout());
-            add(left);
+            if (left != null) {
+                add(left);
+            }
             add(new JLabel(" " + operation + " "));
-            add(right);
+            if (right != null) {
+                add(right);
+            }
         }
     }
 }
