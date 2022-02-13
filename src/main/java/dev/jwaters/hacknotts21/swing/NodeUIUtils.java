@@ -103,20 +103,20 @@ public class NodeUIUtils {
             // user input error, ignore
         }
 
-        try {
-            var functions = DnDSerde.readFromFile(new File("code.json"));
-            var out = TypeChecker.isValid((List<FunctionRepr>) functions);
-            if (out != null) {
-                JOptionPane.showMessageDialog(component, "Code is invalid");
-                // Output function name and error message
-                System.out.println(out.x() + ": " + out.y());
-            }
-
-            JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
-            CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            var functions = DnDSerde.readFromFile(new File("code.json"));
+//            var out = TypeChecker.isValid((List<FunctionRepr>) functions);
+//            if (out != null) {
+//                JOptionPane.showMessageDialog(component, "Code is invalid");
+//                // Output function name and error message
+//                System.out.println(out.x() + ": " + out.y());
+//            }
+//
+//            JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
+//            CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }
