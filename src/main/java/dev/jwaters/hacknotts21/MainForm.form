@@ -74,12 +74,20 @@
               <text value="Load Blocks"/>
             </properties>
           </component>
-          <hspacer id="c93ed">
+          <component id="5d68f" class="javax.swing.JButton" binding="btnCompile" custom-create="true">
             <constraints/>
-          </hspacer>
-          <hspacer id="6484c">
-            <constraints/>
-          </hspacer>
+            <properties>
+              <actionCommand value="Compile"/>
+              <alignmentY value="0.5"/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <hideActionText value="false"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <opaque value="false"/>
+              <text value="Compile "/>
+            </properties>
+          </component>
           <component id="b8028" class="javax.swing.JComboBox" binding="cbSelectLang" custom-create="true">
             <constraints/>
             <properties/>
@@ -142,6 +150,16 @@
               <name value="dev.jwaters.hacknotts21.graph.InputNode"/>
               <opaque value="false"/>
               <text value="Read Input"/>
+            </properties>
+          </component>
+          <component id="315f4" class="javax.swing.JTextField" binding="txtfToString" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.ToStringNode"/>
+              <opaque value="false"/>
+              <text value="To String"/>
             </properties>
           </component>
           <component id="fe4bc" class="javax.swing.JTextField" binding="txtfPrint" custom-create="true">
