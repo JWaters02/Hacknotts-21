@@ -2,6 +2,7 @@ package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.HintTextField;
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
@@ -93,7 +94,7 @@ public final class SetVarNode extends GraphNode<SetVarNode.Panel> {
             add(new JLabel(" to "));
 
             if (value != null) {
-                add(value);
+                add(NodeUIUtils.wrapBody(value));
             }
         }
     }

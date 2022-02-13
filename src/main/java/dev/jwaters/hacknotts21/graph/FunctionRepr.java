@@ -2,6 +2,7 @@ package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.swing.HintTextField;
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
 
@@ -74,8 +75,9 @@ public class FunctionRepr {
             headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
             headerPanel.add(new JLabel("Function: "));
             headerPanel.add(nameField);
+            add(headerPanel);
 
-            add(body);
+            add(NodeUIUtils.wrapBody(body));
         }
     }
 }

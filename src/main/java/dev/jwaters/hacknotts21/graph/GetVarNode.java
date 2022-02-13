@@ -65,7 +65,7 @@ public final class GetVarNode extends GraphNode<GetVarNode.Panel> {
 
         public Panel() {
             setLayout(new FlowLayout());
-            add(new JLabel("Get "));
+            add(new JLabel("Variable "));
             add(nameField);
         }
     }

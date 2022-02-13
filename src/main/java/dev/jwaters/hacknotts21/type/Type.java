@@ -57,6 +57,7 @@ public abstract sealed class Type permits BooleanType, IntType, StringType, Void
                 values = newValues;
             }
             this.comboBox = new JComboBox<>(values);
+            add(comboBox);
         }
 
         @Nullable

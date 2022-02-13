@@ -95,7 +95,7 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
             conditionPanel.add(new JLabel("If "));
             conditionPanel.add(condition);
             conditionPanel.add(new JLabel(":"));
-            add(conditionPanel);
+            add(NodeUIUtils.wrapBody(conditionPanel));
 
             add(NodeUIUtils.wrapBody(ifBody));
             add(new JLabel("Else:"));

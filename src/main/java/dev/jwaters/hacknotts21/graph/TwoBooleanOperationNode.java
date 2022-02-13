@@ -1,6 +1,7 @@
 package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.BooleanType;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -116,11 +117,11 @@ public final class TwoBooleanOperationNode extends GraphNode<TwoBooleanOperation
 
             setLayout(new FlowLayout());
             if (left != null) {
-                add(left);
+                add(NodeUIUtils.wrapBody(left));
             }
             add(new JLabel(" " + operation + " "));
             if (right != null) {
-                add(right);
+                add(NodeUIUtils.wrapBody(right));
             }
         }
     }

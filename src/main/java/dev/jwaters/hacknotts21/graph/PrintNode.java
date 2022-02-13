@@ -1,6 +1,7 @@
 package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.StringType;
 import dev.jwaters.hacknotts21.type.Type;
 import dev.jwaters.hacknotts21.type.VoidType;
@@ -65,7 +66,7 @@ public final class PrintNode extends GraphNode<PrintNode.Panel> {
 
             setLayout(new FlowLayout());
             add(new JLabel("Print "));
-            add(value);
+            add(NodeUIUtils.wrapBody(value));
         }
     }
 

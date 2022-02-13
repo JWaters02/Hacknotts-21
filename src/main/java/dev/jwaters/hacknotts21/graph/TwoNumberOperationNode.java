@@ -1,5 +1,6 @@
 package dev.jwaters.hacknotts21.graph;
 
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.BooleanType;
 import com.google.gson.annotations.Expose;
 import dev.jwaters.hacknotts21.type.IntType;
@@ -122,11 +123,11 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
 
             setLayout(new FlowLayout());
             if (left != null) {
-                add(left);
+                add(NodeUIUtils.wrapBody(left));
             }
             add(new JLabel(" " + operation + " "));
             if (right != null) {
-                add(right);
+                add(NodeUIUtils.wrapBody(right));
             }
         }
     }
