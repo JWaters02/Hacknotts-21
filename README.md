@@ -20,3 +20,6 @@ Implementing our own drag and dropping support for JPanels, graph structure, sta
 
 ## What we learned
 That Java is still bad, that JSwing can be really annoying, and that GitHub Copilot is seriously underrated.
+
+## What the program looks like
+![](https://github.com/JWaters02/Hacknotts-21/blob/master/Python%20Compile%20Example.jpg)
