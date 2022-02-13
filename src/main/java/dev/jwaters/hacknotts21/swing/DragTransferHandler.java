@@ -10,9 +10,29 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 public class DragTransferHandler extends TransferHandler {
+    protected boolean isSupportedForImport(Component component) {
+        if (component instanceof JComponent jcomp && jcomp.getClientProperty("supportedForImport") == Boolean.TRUE) {
+            return true;
+        }
+        if (component instanceof JTextField) {
+            return true;
+        }
+        if (component instanceof JLabel) {
+            return true;
+        }
+        if (component instanceof JComboBox<?>) {
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean canImport(TransferSupport support) {
         if (!support.isDrop()) {
+            return false;
+        }
+        if (!isSupportedForImport(support.getComponent())) {
             return false;
         }
         return isStringDataSupported(support);

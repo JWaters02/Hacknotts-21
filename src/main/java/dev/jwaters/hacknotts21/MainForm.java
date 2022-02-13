@@ -1,6 +1,7 @@
 package dev.jwaters.hacknotts21;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import dev.jwaters.hacknotts21.compilers.CodeCompiler;
 import dev.jwaters.hacknotts21.graph.FunctionRepr;
 import dev.jwaters.hacknotts21.compilers.Language;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 enum FileTypes {
     Blocks,
@@ -52,6 +54,8 @@ public class MainForm {
     private JTextField txtfNumOperation;
     private JTextField txtfNotNode;
     private JComboBox cbSelectLang;
+    private JTextField txtfToString;
+    private JButton btnCompile;
 
     private List<FunctionRepr> functions = new ArrayList<>();
 
@@ -107,6 +111,19 @@ public class MainForm {
                 }
             }
         });
+        btnCompile.addActionListener(e -> {
+            try {
+                var functions = DnDSerde.readFromFile(new File("code.json"));
+                System.out.print(functions);
+                JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
+                String code = CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
+                txtCodeOutput.setText(code);
+                txtCodeOutput.revalidate();
+                txtCodeOutput.repaint();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         // Create list of JTextFields from the txtf's
         List<JTextField> txtfList = new ArrayList<>();
@@ -121,6 +138,7 @@ public class MainForm {
         txtfList.add(txtfGetVariable);
         txtfList.add(txtfNumOperation);
         txtfList.add(txtfNotNode);
+        txtfList.add(txtfToString);
         addDraggableListItem(pnlCodeCreator, txtfList);
 
         spnCodeOutput.setPreferredSize(new Dimension(pnlMainWindow.getWidth(), 200));
@@ -128,7 +146,6 @@ public class MainForm {
         // Set up the language combobox
         cbSelectLang.addItem(Language.JAVA);
         cbSelectLang.addItem(Language.PYTHON);
-        cbSelectLang.addItem(Language.LOLCODE);
     }
 
     public static void main(String[] args) {
@@ -160,6 +177,8 @@ public class MainForm {
         txtfGetVariable = new JTextField();
         txtfNotNode = new JTextField();
         cbSelectLang = new JComboBox<>();
+        txtfToString = new JTextField();
+        btnCompile = new JButton();
     }
 
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {

@@ -5,7 +5,6 @@ import dev.jwaters.hacknotts21.graph.*;
 import java.io.IOException;
 
 class PythonCompiler extends CodeCompiler {
-    private final StringBuilder writer;
     private int indentationLevel;
 
     public PythonCompiler() {

@@ -6,7 +6,6 @@ import dev.jwaters.hacknotts21.type.*;
 import java.io.IOException;
 
 class LOLCODECompiler extends CodeCompiler {
-    private final StringBuilder writer;
     private int indentationLevel;
 
     public LOLCODECompiler() {
