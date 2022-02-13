@@ -229,12 +229,13 @@
             <properties>
               <autoscrolls value="false"/>
               <caretColor color="-10790053"/>
+              <columns value="30"/>
               <editable value="false"/>
               <focusable value="true"/>
               <lineWrap value="true"/>
               <opaque value="false"/>
-              <preferredSize width="0" height="200"/>
               <requestFocusEnabled value="true"/>
+              <rows value="10"/>
               <selectionColor color="-10790053"/>
               <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsadhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh&#10;sadas&#10;dsad&#10;"/>
               <wrapStyleWord value="true"/>

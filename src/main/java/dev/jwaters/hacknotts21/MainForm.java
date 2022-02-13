@@ -121,7 +121,6 @@ public class MainForm {
         txtfList.add(txtfNumOperation);
         addDraggableListItem(pnlCodeCreator, txtfList);
 
-        spnCodeOutput.setViewportView(txtCodeOutput);
         spnCodeOutput.setPreferredSize(new Dimension(pnlMainWindow.getWidth(), 200));
     }
 
