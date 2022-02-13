@@ -75,4 +75,8 @@ public final class NotNode extends GraphNode<NotNode.Panel> {
             }
         }
     }
+
+    public GraphNode<?> getValue() {
+        return value;
+    }
 }

@@ -79,6 +79,14 @@ public final class CallFunctionNode extends GraphNode<CallFunctionNode.Panel> {
         }
     }
 
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    public List<GraphNode<?>> getParameters() {
+        return parameters;
+    }
+
     @Override
     public List<@Nullable GraphNode<?>> getChildren() {
         return parameters;

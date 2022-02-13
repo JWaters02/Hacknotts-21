@@ -14,6 +14,39 @@ class JavaCompiler extends CodeCompiler {
     }
 
     @Override
+    void handleToString(ToStringNode node) throws IOException {
+        writer.append("toString(");
+        handleNode(node.getValue());
+        writer.append(")");
+    }
+
+    @Override
+    void stringLiteral(StringLiteralNode node) {
+        writer.append("\"");
+        writer.append(node.getValue());
+        writer.append("\"");
+    }
+
+    @Override
+    void not(NotNode node) throws IOException {
+        writer.append("!");
+        handleNode(node.getValue());
+    }
+
+    @Override
+    void callFunction(CallFunctionNode node) throws IOException {
+        writer.append(node.getFunctionName());
+        writer.append("(");
+        for (int i = 0; i < node.getParameters().size(); i++) {
+            if (i > 0) {
+                writer.append(", ");
+            }
+            handleNode(node.getParameters().get(i));
+        }
+        writer.append(")");
+    }
+
+    @Override
     void declareVar(DeclareVarNode node) {
         Type type = node.getType();
 

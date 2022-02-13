@@ -21,7 +21,6 @@ public abstract class CodeCompiler {
         CodeCompiler compiler = switch (language) {
             case JAVA -> new JavaCompiler();
             case PYTHON -> new PythonCompiler();
-            case LOLCODE -> new LOLCODECompiler();
         };
         compiler.compile(code);
         return compiler.writer.toString();
@@ -48,6 +47,14 @@ public abstract class CodeCompiler {
             print(printnode);
         } else if (node instanceof SetVarNode setvarnode) {
             setVar(setvarnode);
+        } else if (node instanceof CallFunctionNode callfunctionnode) {
+            callFunction(callfunctionnode);
+        } else if (node instanceof NotNode notNode) {
+            not(notNode);
+        } else if (node instanceof StringLiteralNode stringLiteralNode) {
+            stringLiteral(stringLiteralNode);
+        } else if (node instanceof ToStringNode toStringNode) {
+            handleToString(toStringNode);
         } else if (node instanceof TwoNumberOperationNode booleanoperationnode) {
             twoNumberOperation(booleanoperationnode);
         } else if (node instanceof IntegerLiteralNode integerliteralnode) {
@@ -58,6 +65,14 @@ public abstract class CodeCompiler {
             blockStatement(blockNode);
         }
     }
+
+    abstract void handleToString(ToStringNode node) throws IOException;
+
+    abstract void stringLiteral(StringLiteralNode node);
+
+    abstract void not(NotNode node) throws IOException;
+
+    abstract void callFunction(CallFunctionNode node) throws IOException;
 
     abstract void declareVar(DeclareVarNode node) throws IOException;
 

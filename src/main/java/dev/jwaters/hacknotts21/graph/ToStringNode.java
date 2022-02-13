@@ -18,6 +18,10 @@ public final class ToStringNode extends GraphNode<ToStringNode.Panel> {
     @Nullable
     private GraphNode<?> value;
 
+    public GraphNode<?> getValue() {
+        return value;
+    }
+
     public ToStringNode(@Nullable GraphNode<?> parent) {
         super(parent);
     }

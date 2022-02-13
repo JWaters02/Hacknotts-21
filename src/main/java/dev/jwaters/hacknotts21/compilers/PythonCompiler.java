@@ -13,6 +13,37 @@ class PythonCompiler extends CodeCompiler {
     }
 
     @Override
+    void handleToString(ToStringNode node) throws IOException {
+        writer.append("str(");
+        handleNode(node.getValue());
+        writer.append(")");
+    }
+
+    @Override
+    void stringLiteral(StringLiteralNode node) {
+        writer.append(String.format("\"%s\"", node.getValue()));
+    }
+
+    @Override
+    void not(NotNode node) throws IOException {
+        writer.append("not ");
+        handleNode(node.getValue());
+    }
+
+    @Override
+    void callFunction(CallFunctionNode node) throws IOException {
+        writer.append(node.getFunctionName());
+        writer.append("(");
+        for (int i = 0; i < node.getParameters().size(); i++) {
+            if (i != 0) {
+                writer.append(", ");
+            }
+            handleNode(node.getParameters().get(i));
+        }
+        writer.append(")");
+    }
+
+    @Override
     void declareVar(DeclareVarNode node) {
         // meaningless in python
     }
