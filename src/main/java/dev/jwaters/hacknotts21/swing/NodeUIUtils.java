@@ -1,5 +1,10 @@
 package dev.jwaters.hacknotts21.swing;
 
+import dev.jwaters.hacknotts21.DnDSerde;
+import dev.jwaters.hacknotts21.MainForm;
+import dev.jwaters.hacknotts21.codecorrectness.TypeChecker;
+import dev.jwaters.hacknotts21.compilers.CodeCompiler;
+import dev.jwaters.hacknotts21.compilers.Language;
 import dev.jwaters.hacknotts21.graph.FunctionRepr;
 import dev.jwaters.hacknotts21.graph.GraphNode;
 import dev.jwaters.hacknotts21.graph.UserInputException;
@@ -8,6 +13,10 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class NodeUIUtils {
@@ -62,22 +71,16 @@ public class NodeUIUtils {
             if (c instanceof JTextField textField) {
                 textField.getDocument().addDocumentListener(new DocumentListener() {
                     @Override
-                    public void insertUpdate(DocumentEvent e) {
-                        onPropertyChanged(c);
-                    }
+                    public void insertUpdate(DocumentEvent e) { onPropertyChanged(c);}
 
                     @Override
-                    public void removeUpdate(DocumentEvent e) {
-                        onPropertyChanged(c);
-                    }
+                    public void removeUpdate(DocumentEvent e) { onPropertyChanged(c); }
 
                     @Override
-                    public void changedUpdate(DocumentEvent e) {
-                        onPropertyChanged(c);
-                    }
+                    public void changedUpdate(DocumentEvent e) { onPropertyChanged(c); }
                 });
             } else if (c instanceof JComboBox<?> comboBox) {
-                comboBox.addActionListener(e -> onPropertyChanged(c));
+                comboBox.addActionListener(e -> {onPropertyChanged(c);});
             }
 
             c.putClientProperty("addedListeners", Boolean.TRUE);
@@ -99,5 +102,21 @@ public class NodeUIUtils {
         } catch (UserInputException e) {
             // user input error, ignore
         }
+
+        try {
+            var functions = DnDSerde.readFromFile(new File("code.json"));
+            var out = TypeChecker.isValid((List<FunctionRepr>) functions);
+            if (out != null) {
+                JOptionPane.showMessageDialog(component, "Code is invalid");
+                // Output function name and error message
+                System.out.println(out.x() + ": " + out.y());
+            }
+
+            JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
+            CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
