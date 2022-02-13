@@ -85,9 +85,9 @@ public abstract sealed class AbstractConditionNode extends GraphNode<AbstractCon
             JPanel conditionPanel = new JPanel();
             conditionPanel.setLayout(new FlowLayout());
             conditionPanel.add(new JLabel(conditionTypeName + " "));
-            conditionPanel.add(condition);
+            conditionPanel.add(NodeUIUtils.wrapBody(condition));
             conditionPanel.add(new JLabel(":"));
-            add(NodeUIUtils.wrapBody(conditionPanel));
+            add(conditionPanel);
 
             add(NodeUIUtils.wrapBody(body));
         }

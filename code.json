@@ -22,6 +22,35 @@
             "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
             "varName": "var"
           }
+        },
+        {
+          "_type": "dev.jwaters.hacknotts21.graph.IfNode",
+          "condition": {
+            "_type": "dev.jwaters.hacknotts21.graph.NotNode",
+            "value": {
+              "_type": "dev.jwaters.hacknotts21.graph.TwoNumberOperationNode",
+              "left": {
+                "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+                "varName": "var"
+              },
+              "right": {
+                "_type": "dev.jwaters.hacknotts21.graph.IntegerLiteralNode",
+                "value": 2
+              },
+              "operation": "EQUAL"
+            }
+          },
+          "body": {
+            "children": [
+              {
+                "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
+                "value": {
+                  "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+                  "varName": "var"
+                }
+              }
+            ]
+          }
         }
       ]
     }
