@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.thankyoujava.JavaIsBadUtil;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
@@ -55,6 +56,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public final C createComponent() {
         C component = makeComponent();
         component.putClientProperty("node", this);
+        NodeUIUtils.addListeners(component);
         return component;
     }
     protected abstract C makeComponent();
@@ -64,12 +66,12 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public abstract List<@Nullable GraphNode<?>> getChildren();
 
     @SuppressWarnings("unchecked")
-    protected static <T extends JComponent> void doReadFromComponent(GraphNode<?> node, T component) throws UserInputException {
+    public static <T extends JComponent> void doReadFromComponent(GraphNode<?> node, T component) throws UserInputException {
         ((GraphNode<T>) node).readFromComponent(component);
     }
 
     @SuppressWarnings("unchecked")
-    protected static <T extends JComponent> void doWriteToComponent(GraphNode<?> node, T component) {
+    public static <T extends JComponent> void doWriteToComponent(GraphNode<?> node, T component) {
         ((GraphNode<T>) node).writeToComponent(component);
     }
 
