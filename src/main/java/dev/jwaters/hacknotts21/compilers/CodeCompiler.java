@@ -4,17 +4,15 @@ import dev.jwaters.hacknotts21.DnDSerde;
 import dev.jwaters.hacknotts21.MainForm;
 import dev.jwaters.hacknotts21.graph.*;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
-
-enum Language {
-    PYTHON,
-    JAVA,
-    LOLCODE
-}
+import java.util.Objects;
 
 public abstract class CodeCompiler {
     public static void compile(Collection<FunctionRepr> code, Language language) throws IOException {
@@ -129,8 +127,8 @@ public abstract class CodeCompiler {
 //        compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
 
         var functions = DnDSerde.readFromFile(new File("code.json"));
-
-        CodeCompiler.compile(functions, Language.PYTHON);
+        JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
+        CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
     }
 }
 

@@ -3,6 +3,7 @@ package dev.jwaters.hacknotts21;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import dev.jwaters.hacknotts21.graph.FunctionRepr;
 import dev.jwaters.hacknotts21.graph.GraphNode;
+import dev.jwaters.hacknotts21.compilers.Language;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -10,6 +11,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
@@ -53,6 +56,7 @@ public class MainForm {
     private JTextField txtfGetVariable;
     private JTextField txtfNumOperation;
     private JTextField txtfNotNode;
+    private JComboBox cbSelectLang;
 
     private List<FunctionRepr> functions = new ArrayList<>();
 
@@ -71,6 +75,7 @@ public class MainForm {
         pnlCodeCreator.revalidate();
     }
 
+    @SuppressWarnings("unchecked")
     public MainForm() {
         instance = this;
 
@@ -82,10 +87,18 @@ public class MainForm {
             pnlCodeCreator.revalidate();
         });
         btnSaveCode.addActionListener(e -> {
-
+            saveCode();
         });
         btnSaveBlocks.addActionListener(e -> {
-            saveCode();
+            File file = chooseFile(FileTypes.Blocks, true);
+            if (file != null) {
+                try {
+                    DnDSerde.writeToFile(file, functions);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
         btnLoadBlocks.addActionListener(e -> {
             File file = chooseFile(FileTypes.Blocks, false);
@@ -116,6 +129,11 @@ public class MainForm {
         addDraggableListItem(pnlCodeCreator, txtfList);
 
         spnCodeOutput.setPreferredSize(new Dimension(pnlMainWindow.getWidth(), 200));
+
+        // Set up the language combobox
+        cbSelectLang.addItem(Language.JAVA);
+        cbSelectLang.addItem(Language.PYTHON);
+        cbSelectLang.addItem(Language.LOLCODE);
     }
 
     public static void main(String[] args) {
@@ -146,6 +164,7 @@ public class MainForm {
         txtfNumOperation = new JTextField();
         txtfGetVariable = new JTextField();
         txtfNotNode = new JTextField();
+        cbSelectLang = new JComboBox<>();
     }
 
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
@@ -258,6 +277,8 @@ public class MainForm {
     public JTextArea getTxtCodeOutput() {
         return txtCodeOutput;
     }
+
+    public JComboBox<Language> getCbSelectLang() { return cbSelectLang; }
 
     @Nullable
     private File chooseFile(FileTypes fileType, boolean save) {
