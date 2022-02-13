@@ -1,7 +1,10 @@
 package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.*;
-import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import dev.jwaters.hacknotts21.thankyoujava.JavaIsBadUtil;
 import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +14,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Function;
 
 public abstract sealed class GraphNode<C extends JComponent> permits
         AbstractConditionNode,
@@ -26,11 +30,11 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         StringLiteralNode,
         TwoBooleanOperationNode,
         TwoNumberOperationNode {
+    @SuppressWarnings("unchecked")
+    public static final Class<? extends GraphNode<?>>[] GRAPH_NODE_TYPES = JavaIsBadUtil.getConcreteClasses((Class<GraphNode<?>>) (Class<?>) GraphNode.class);
+
     @Nullable
     private final GraphNode<?> parent;
-    @SuppressWarnings("unused") // used for serialization
-    @Expose(deserialize = false)
-    private final String _type = getClass().getName();
 
     public GraphNode(@Nullable GraphNode<?> parent) {
         this.parent = parent;
@@ -63,26 +67,70 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         ((GraphNode<T>) node).writeToComponent(component);
     }
 
-    public static class Serializer implements JsonDeserializer<GraphNode<?>>, InstanceCreator<GraphNode<?>> {
+    public static class SerializerFactory implements TypeAdapterFactory, InstanceCreator<GraphNode<?>> {
         private final ThreadLocal<Deque<GraphNode<?>>> stack = ThreadLocal.withInitial(ArrayDeque::new);
 
+        @SuppressWarnings("unchecked")
         @Override
-        public GraphNode<?> deserialize(JsonElement json, java.lang.reflect.Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return deserialize0(json, context);
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+            Class<? super T> rawType = type.getRawType();
+            if (!GraphNode.class.isAssignableFrom(rawType)) {
+                return null;
+            }
+            return (TypeAdapter<T>) Serializer.create(rawType.asSubclass(GraphNode.class), gson, typ -> gson.getDelegateAdapter(this, typ), stack);
+        }
+
+        @Override
+        public GraphNode<?> createInstance(java.lang.reflect.Type type) {
+            return stack.get().getFirst();
+        }
+    }
+
+    public static class Serializer<T extends GraphNode<?>> extends TypeAdapter<T> {
+        private final Class<T> reifiedType;
+        private final Gson gson;
+        private final Function<TypeToken<T>, TypeAdapter<T>> delegate;
+        private final ThreadLocal<Deque<GraphNode<?>>> stack;
+
+        @SuppressWarnings("unchecked")
+        public static <T extends GraphNode<?>> TypeAdapter<?> create(Class<T> reifiedType, Gson gson, Function<TypeToken<?>, TypeAdapter<?>> delegate, ThreadLocal<Deque<GraphNode<?>>> stack) {
+            return new Serializer<>(reifiedType, gson, (Function<TypeToken<T>, TypeAdapter<T>>) (Function<?, ?>) delegate, stack);
+        }
+
+        private Serializer(Class<T> reifiedType, Gson gson, Function<TypeToken<T>, TypeAdapter<T>> delegate, ThreadLocal<Deque<GraphNode<?>>> stack) {
+            this.reifiedType = reifiedType;
+            this.gson = gson;
+            this.delegate = delegate;
+            this.stack = stack;
         }
 
         @SuppressWarnings("unchecked")
-        private <T extends GraphNode<?>> T deserialize0(JsonElement json, JsonDeserializationContext context) throws JsonParseException {
-            String typeStr = json.getAsJsonObject().get("_type").getAsString();
-            Class<T> clazz;
-            try {
-                clazz = (Class<T>) Class.forName(typeStr, false, getClass().getClassLoader());
-            } catch (ClassNotFoundException e) {
-                throw new JsonParseException("Unknown type: " + typeStr, e);
+        @Override
+        public void write(JsonWriter out, T value) {
+            Class<T> type = (Class<T>) value.getClass();
+            JsonObject json = delegate.apply(TypeToken.get(type)).toJsonTree(value).getAsJsonObject();
+            json.addProperty("_type", value.getClass().getName());
+            gson.toJson(json, out);
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public T read(JsonReader in) {
+            Class<T> clazz = reifiedType;
+            JsonObject json = gson.fromJson(in, JsonObject.class);
+            //noinspection RedundantCast
+            if (reifiedType == (Class<?>) GraphNode.class) {
+                String typeStr = json.get("_type").getAsString();
+                try {
+                    clazz = (Class<T>) Class.forName(typeStr, false, getClass().getClassLoader());
+                } catch (ClassNotFoundException e) {
+                    throw new JsonParseException("Unknown type: " + typeStr, e);
+                }
+                if (Modifier.isAbstract(clazz.getModifiers()) || !GraphNode.class.isAssignableFrom(clazz)) {
+                    throw new JsonParseException("Cannot instantiate graph node type: " + typeStr);
+                }
             }
-            if (Modifier.isAbstract(clazz.getModifiers()) || !GraphNode.class.isAssignableFrom(clazz)) {
-                throw new JsonParseException("Cannot instantiate graph node type: " + typeStr);
-            }
+
             Constructor<T> ctor;
             try {
                 ctor = clazz.getConstructor(GraphNode.class);
@@ -97,16 +145,11 @@ public abstract sealed class GraphNode<C extends JComponent> permits
             }
             stack.get().push(node);
             try {
-                context.deserialize(json, clazz);
+                delegate.apply(TypeToken.get(clazz)).fromJsonTree(json);
             } finally {
                 stack.get().pop();
             }
             return node;
-        }
-
-        @Override
-        public GraphNode<?> createInstance(java.lang.reflect.Type type) {
-            return stack.get().getFirst();
         }
     }
 }

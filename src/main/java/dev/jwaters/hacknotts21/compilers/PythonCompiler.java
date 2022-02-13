@@ -73,6 +73,7 @@ class PythonCompiler extends CodeCompiler {
         for (GraphNode<?> child : node.getChildren()) {
             printIndent();
             handleNode(child);
+            writer.write("\n");
         }
     }
 

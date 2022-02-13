@@ -60,9 +60,7 @@ public abstract class CodeCompiler {
         } else if (node instanceof TwoBooleanOperationNode booleanoperationnode) {
             twoBooleanOperation(booleanoperationnode);
         } else if (node instanceof BlockNode blockNode) {
-            for (GraphNode<?> child : blockNode.getChildren()) {
-                handleNode(child);
-            }
+            blockStatement(blockNode);
         }
     }
 

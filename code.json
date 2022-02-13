@@ -10,7 +10,7 @@
         },
         {
           "_type": "dev.jwaters.hacknotts21.graph.SetVarNode",
-          "name": "var",
+          "varName": "var",
           "value": {
             "_type": "dev.jwaters.hacknotts21.graph.IntegerLiteralNode",
             "value": 1
@@ -20,7 +20,7 @@
           "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
           "value": {
             "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
-            "name": "var"
+            "varName": "var"
           }
         }
       ]
