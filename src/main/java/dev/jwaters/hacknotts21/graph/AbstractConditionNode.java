@@ -61,6 +61,13 @@ public abstract sealed class AbstractConditionNode extends GraphNode<AbstractCon
         return Arrays.asList(condition, body);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        if (index == 0) {
+            condition = newChild;
+        }
+    }
+
     public void setCondition(GraphNode<?> condition) {
         this.condition = condition;
     }

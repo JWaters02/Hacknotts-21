@@ -111,6 +111,14 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
         return Arrays.asList(left, right);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        switch (index) {
+            case 0 -> left = newChild;
+            case 1 -> right = newChild;
+        }
+    }
+
     public static final class Panel extends JPanel {
         @Nullable
         private final JComponent left;

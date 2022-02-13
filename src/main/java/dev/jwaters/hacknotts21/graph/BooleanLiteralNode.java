@@ -50,6 +50,10 @@ public final class BooleanLiteralNode extends GraphNode<JComboBox<Boolean>> {
         return Collections.emptyList();
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+    }
+
     public void setValue(boolean value) {
         this.value = value;
     }

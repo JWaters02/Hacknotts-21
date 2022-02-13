@@ -58,4 +58,8 @@ public final class IntegerLiteralNode extends GraphNode<JSpinner> {
     public List<@Nullable GraphNode<?>> getChildren() {
         return Collections.emptyList();
     }
+
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+    }
 }

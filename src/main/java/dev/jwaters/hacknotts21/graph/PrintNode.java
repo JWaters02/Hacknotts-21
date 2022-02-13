@@ -50,6 +50,11 @@ public final class PrintNode extends GraphNode<PrintNode.Panel> {
         return Collections.singletonList(value);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        value = newChild;
+    }
+
     public GraphNode<?> getValue() {
         return value;
     }

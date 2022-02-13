@@ -56,6 +56,11 @@ public final class NotNode extends GraphNode<NotNode.Panel> {
         return Collections.singletonList(value);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        value = newChild;
+    }
+
     public static final class Panel extends JPanel {
         @Nullable JComponent value;
 
