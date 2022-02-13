@@ -46,19 +46,6 @@
               <text value="Save Code"/>
             </properties>
           </component>
-          <component id="41ca" class="javax.swing.JButton" binding="btnLoadCode">
-            <constraints/>
-            <properties>
-              <alignmentY value="0.5"/>
-              <borderPainted value="false"/>
-              <contentAreaFilled value="false"/>
-              <hideActionText value="false"/>
-              <horizontalAlignment value="0"/>
-              <horizontalTextPosition value="0"/>
-              <opaque value="false"/>
-              <text value="Load Code"/>
-            </properties>
-          </component>
           <component id="347c5" class="javax.swing.JButton" binding="btnSaveBlocks">
             <constraints/>
             <properties>

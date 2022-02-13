@@ -1,9 +1,9 @@
 package dev.jwaters.hacknotts21;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import dev.jwaters.hacknotts21.graph.FunctionRepr;
 import dev.jwaters.hacknotts21.graph.GraphNode;
-import dev.jwaters.hacknotts21.swing.HintTextField;
-import dev.jwaters.hacknotts21.type.Type;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,11 +12,14 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 enum FileTypes {
@@ -39,7 +42,6 @@ public class MainForm {
     private JTextField txtfPrint;
     private JTextField txtfDefineVar;
     private JButton btnSaveCode;
-    private JButton btnLoadCode;
     private JTextField txtfIf;
     private JTextField txtfElse;
     private JTextField txtfWhile;
@@ -49,13 +51,59 @@ public class MainForm {
     private JTextField txtfGetVariable;
     private JTextField txtfNumOperation;
 
+    private List<FunctionRepr> functions = new ArrayList<>();
+
+    private void loadFunctions(List<FunctionRepr> functions) {
+        this.functions = functions;
+        pnlCodeCreator.removeAll();
+        for (FunctionRepr function : functions) {
+            FunctionRepr.Panel functionPanel = createFunctionJPanel();
+            function.writeToPanel(functionPanel);
+        }
+        pnlCodeCreator.revalidate();
+    }
+
     public MainForm() {
         // Listeners
-        btnNewFunction.addActionListener(e -> createFunctionJPanel());
-        btnSaveCode.addActionListener(e -> saveToFile(FileTypes.Code, "stuff"));
-        btnLoadCode.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Code)));
-        btnSaveBlocks.addActionListener(e -> saveToFile(FileTypes.Blocks, "stuff"));
-        btnLoadBlocks.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Blocks)));
+        btnNewFunction.addActionListener(e -> {
+            functions.add(new FunctionRepr(""));
+            createFunctionJPanel();
+            pnlCodeCreator.revalidate();
+        });
+        btnSaveCode.addActionListener(e -> {
+            File file = chooseFile(FileTypes.Code, true);
+            if (file != null) {
+                try (var writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write(txtCodeOutput.getText());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnSaveBlocks.addActionListener(e -> {
+            File file = chooseFile(FileTypes.Blocks, true);
+            if (file != null) {
+                try {
+                    DnDSerde.writeToFile(file, functions);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        btnLoadBlocks.addActionListener(e -> {
+            File file = chooseFile(FileTypes.Blocks, false);
+            if (file != null) {
+                try {
+                    Collection<FunctionRepr> functions = DnDSerde.readFromFile(file);
+                    loadFunctions(new ArrayList<>(functions));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(pnlMainWindow, "Error loading file", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // Create list of JTextFields from the txtf's
         List<JTextField> txtfList = new ArrayList<>();
@@ -210,64 +258,24 @@ public class MainForm {
         return pnlCodeCreator;
     }
 
-    private void saveToFile(FileTypes fileType, String data) {
-        JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
-        if (fileType == FileTypes.Blocks) {
-            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-        }
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            try {
-                Files.write(file.toPath(), data.getBytes());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
-
-    private String loadFromFile(FileTypes fileType) {
+    @Nullable
+    private File chooseFile(FileTypes fileType, boolean save) {
         JFileChooser fc = new JFileChooser();
         String out = "";
-        int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
+        int returnVal = save ? fc.showSaveDialog(MainForm.this.pnlMainWindow) : fc.showOpenDialog(MainForm.this.pnlMainWindow);
         if (fileType == FileTypes.Blocks) {
             fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
         }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            try {
-                out = new String(Files.readAllBytes(file.toPath()));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            return fc.getSelectedFile();
         }
-        return out;
+        return null;
     }
 
-    public static class Panel extends JPanel {
-        public Panel() {
-            setLayout(new FlowLayout());
-            add(new JLabel("Function: "));
-            HintTextField nameField = new HintTextField("Name");
-            add(nameField);
-        }
-    }
-
-    private void createFunctionJPanel() {
-        Panel functionPanel = new Panel();
-        functionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        functionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        functionPanel.setOpaque(true);
-        functionPanel.setBackground(Color.darkGray);
-        // Set preferred height to be the same as the height of the JPanel
-        functionPanel.setPreferredSize(new Dimension(300, pnlCodeCreator.getHeight() - 20));
-        // Align the new panel to be to the right of the previous one in pnlCodeCreator if exists
-        if (pnlCodeCreator.getComponentCount() > 0) {
-            functionPanel.setLocation(pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getX() +
-                    pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getWidth(), 0);
-        }
-        pnlCodeCreator.add(functionPanel);
-        pnlCodeCreator.revalidate();
+    private FunctionRepr.Panel createFunctionJPanel() {
+        FunctionRepr.Panel panel = new FunctionRepr.Panel();
+        pnlCodeCreator.add(panel);
+        return panel;
     }
 
     public void outputCompiledCode(File file) {
