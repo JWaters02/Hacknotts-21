@@ -40,7 +40,7 @@ public abstract sealed class AbstractConditionNode extends GraphNode<AbstractCon
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(conditionTypeName, condition.createComponent(), body.createComponent());
     }
 

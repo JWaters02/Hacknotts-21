@@ -36,7 +36,7 @@ public final class IntegerLiteralNode extends GraphNode<JSpinner> {
     }
 
     @Override
-    public JSpinner createComponent() {
+    protected JSpinner makeComponent() {
         return new JSpinner();
     }
 

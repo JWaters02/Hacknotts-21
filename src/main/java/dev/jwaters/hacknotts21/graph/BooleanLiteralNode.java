@@ -28,7 +28,7 @@ public final class BooleanLiteralNode extends GraphNode<JComboBox<Boolean>> {
     }
 
     @Override
-    public JComboBox<Boolean> createComponent() {
+    protected JComboBox<Boolean> makeComponent() {
         return new JComboBox<>(new Boolean[]{true, false});
     }
 

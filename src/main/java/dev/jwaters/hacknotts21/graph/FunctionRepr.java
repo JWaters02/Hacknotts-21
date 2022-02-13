@@ -46,7 +46,9 @@ public class FunctionRepr {
     }
 
     public Panel createComponent() {
-        return new Panel(body.createComponent());
+        Panel panel = new Panel(body.createComponent());
+        panel.putClientProperty("functionRepr", this);
+        return panel;
     }
 
     public void readFromPanel(Panel panel) throws UserInputException {

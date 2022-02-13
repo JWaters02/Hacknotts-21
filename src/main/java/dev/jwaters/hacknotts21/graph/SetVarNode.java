@@ -38,7 +38,7 @@ public final class SetVarNode extends GraphNode<SetVarNode.Panel> {
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(value == null ? null : value.createComponent());
     }
 

@@ -76,7 +76,7 @@ public final class TwoBooleanOperationNode extends GraphNode<TwoBooleanOperation
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(left == null ? null : left.createComponent(), operation.symbol, right == null ? null : right.createComponent());
     }
 

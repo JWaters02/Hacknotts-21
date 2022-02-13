@@ -86,7 +86,7 @@ public final class TwoNumberOperationNode extends GraphNode<TwoNumberOperationNo
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(left == null ? null : left.createComponent(), operation.symbol, right == null ? null : right.createComponent());
     }
 

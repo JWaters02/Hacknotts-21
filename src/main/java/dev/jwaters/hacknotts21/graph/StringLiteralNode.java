@@ -36,7 +36,7 @@ public final class StringLiteralNode extends GraphNode<HintTextField> {
     }
 
     @Override
-    public HintTextField createComponent() {
+    protected HintTextField makeComponent() {
         return new HintTextField("Your Text Here");
     }
 

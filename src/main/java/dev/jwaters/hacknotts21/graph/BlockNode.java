@@ -28,13 +28,11 @@ public final class BlockNode extends GraphNode<JPanel> {
     }
 
     @Override
-    public JPanel createComponent() {
+    protected JPanel makeComponent() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         for (GraphNode<?> child : children) {
-            JComponent childComponent = child.createComponent();
-            childComponent.putClientProperty("node", child);
-            panel.add(childComponent);
+            panel.add(child.createComponent());
         }
         return panel;
     }

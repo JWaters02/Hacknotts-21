@@ -51,7 +51,12 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     @Nullable
     public abstract Type getReturnType(FunctionRepr containingFunc);
 
-    public abstract C createComponent();
+    public final C createComponent() {
+        C component = makeComponent();
+        component.putClientProperty("node", this);
+        return component;
+    }
+    protected abstract C makeComponent();
     public abstract void readFromComponent(C component) throws UserInputException;
     public abstract void writeToComponent(C component);
 

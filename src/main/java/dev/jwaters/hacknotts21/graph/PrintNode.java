@@ -31,7 +31,7 @@ public final class PrintNode extends GraphNode<PrintNode.Panel> {
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(value.createComponent());
     }
 

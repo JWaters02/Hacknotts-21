@@ -24,7 +24,7 @@ public final class InputNode extends GraphNode<JLabel> {
     }
 
     @Override
-    public JLabel createComponent() {
+    protected JLabel makeComponent() {
         return new JLabel("Get User Input");
     }
 

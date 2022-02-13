@@ -33,7 +33,7 @@ public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
          return new Panel();
     }
 

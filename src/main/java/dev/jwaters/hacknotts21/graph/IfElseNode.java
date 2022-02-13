@@ -40,7 +40,7 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
     }
 
     @Override
-    public Panel createComponent() {
+    protected Panel makeComponent() {
         return new Panel(condition.createComponent(), ifBody.createComponent(), elseBody.createComponent());
     }
 
