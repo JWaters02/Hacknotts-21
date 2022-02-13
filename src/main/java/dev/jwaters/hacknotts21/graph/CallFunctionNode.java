@@ -85,6 +85,11 @@ public final class CallFunctionNode extends GraphNode<CallFunctionNode.Panel> {
         return parameters;
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        parameters.set(index, newChild);
+    }
+
     public static class Panel extends JPanel {
         private final JComboBox<String> functionName;
         private final List<JComponent> parameters;

@@ -2,15 +2,12 @@ package dev.jwaters.hacknotts21;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import dev.jwaters.hacknotts21.graph.FunctionRepr;
-import dev.jwaters.hacknotts21.graph.GraphNode;
 import dev.jwaters.hacknotts21.compilers.Language;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,8 +16,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -170,8 +165,6 @@ public class MainForm {
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
         TransferHandler handler = new TransferHandler("name");
-        DragTransferHandler dragHandler = new DragTransferHandler();
-        pnlCodeCreator.setTransferHandler(dragHandler);
         pnlCodeCreator.addMouseListener(listener);
         for (JTextField txtf : txtfList) {
             txtf.addMouseListener(listener);
@@ -186,92 +179,6 @@ public class MainForm {
             var handler = c.getTransferHandler();
             handler.exportAsDrag(c, e, TransferHandler.COPY);
         }
-    }
-
-    private class DragTransferHandler extends TransferHandler {
-        @Override
-        public boolean canImport(TransferSupport support) {
-            if (!support.isDrop()) {
-                return false;
-            }
-            return isStringDataSupported(support);
-        }
-
-        protected boolean isStringDataSupported(TransferSupport support) {
-            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) return true;
-            DataFlavor[] flavors = support.getDataFlavors();
-            for (DataFlavor dataFlavor : flavors) {
-                if (dataFlavor.getRepresentationClass() == String.class) return true;
-            }
-            return false;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public boolean importData(TransferSupport support) {
-            if (!canImport(support)) {
-                return false;
-            }
-
-            String line;
-            try {
-                line = getStringData(support);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            try {
-                Class<?> blockClass = Class.forName(line);
-                if (GraphNode.class.isAssignableFrom(blockClass)) {
-                    Constructor<? extends GraphNode<?>> constructor = (Constructor<? extends GraphNode<?>>) blockClass.asSubclass(GraphNode.class).getConstructor(GraphNode.class);
-                    GraphNode<?> node = constructor.newInstance((Object) null);
-                    addJPanelToCodeCreator(node.createComponent());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            System.out.println(line);
-            return true;
-        }
-
-        protected String getStringData(TransferSupport support)
-                throws UnsupportedFlavorException, IOException {
-            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                return (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
-            }
-            DataFlavor[] flavors = support.getDataFlavors();
-            for (DataFlavor dataFlavor : flavors) {
-                if (dataFlavor.getRepresentationClass() == String.class) {
-                    return (String) support.getTransferable().getTransferData(dataFlavor);
-                }
-            }
-            return "";
-        }
-    }
-
-    private void addJPanelToCodeCreator(JComponent component) {
-        pnlMainWindow.add(component);
-    }
-
-    private List<JPanel> getJPanelsInCodeCreator() {
-        // Everytime this is called, we want to get JPanels in the pnlCodeCreator
-        Component[] panels = pnlCodeCreator.getComponents();
-        txtCodeOutput = new JTextArea();
-        List<JPanel> panelList = new ArrayList<>();
-        try {
-            for (Component panel : panels) {
-                panelList.add((JPanel) panel);
-            }
-        } catch (Exception e) {
-            txtCodeOutput.append("Error: " + e.getMessage());
-        }
-        return panelList;
-    }
-
-    public JPanel getPnlCodeCreator() {
-        return pnlCodeCreator;
     }
 
     public JTextArea getTxtCodeOutput() {
@@ -292,17 +199,6 @@ public class MainForm {
             return fc.getSelectedFile();
         }
         return null;
-    }
-
-    public void outputCompiledCode(File file) {
-        String code = "";
-        // Read text from file into code
-        try {
-            code = new String(Files.readAllBytes(file.toPath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        txtCodeOutput.setText(code);
     }
 
     public void removeFunction(Component component) {

@@ -54,6 +54,10 @@ public final class DeclareVarNode extends GraphNode<DeclareVarNode.Panel> {
         return Collections.emptyList();
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+    }
+
     public String getName() {
         return name;
     }

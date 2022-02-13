@@ -54,4 +54,8 @@ public final class StringLiteralNode extends GraphNode<HintTextField> {
     public List<@Nullable GraphNode<?>> getChildren() {
         return Collections.emptyList();
     }
+
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+    }
 }

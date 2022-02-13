@@ -63,6 +63,13 @@ public final class IfElseNode extends GraphNode<IfElseNode.Panel> {
         return Arrays.asList(condition, ifBody, elseBody);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        if (index == 0) {
+            condition = newChild;
+        }
+    }
+
     public GraphNode<?> getCondition() {
         return condition;
     }

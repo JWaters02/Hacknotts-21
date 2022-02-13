@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dev.jwaters.hacknotts21.swing.DragTransferHandler;
 import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.thankyoujava.JavaIsBadUtil;
 import dev.jwaters.hacknotts21.type.Type;
@@ -59,6 +60,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         C component = makeComponent();
         component.putClientProperty("node", this);
         NodeUIUtils.addListeners(component);
+        component.setTransferHandler(new DragTransferHandler());
         return component;
     }
     protected abstract C makeComponent();
@@ -66,6 +68,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public abstract void writeToComponent(C component);
 
     public abstract List<@Nullable GraphNode<?>> getChildren();
+    public abstract void replaceChild(int index, GraphNode<?> newChild);
 
     @SuppressWarnings("unchecked")
     public static <T extends JComponent> void doReadFromComponent(GraphNode<?> node, T component) throws UserInputException {
@@ -75,6 +78,13 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     @SuppressWarnings("unchecked")
     public static <T extends JComponent> void doWriteToComponent(GraphNode<?> node, T component) {
         ((GraphNode<T>) node).writeToComponent(component);
+    }
+
+    public void replace(GraphNode<?> newNode) {
+        GraphNode<?> parent = this.parent;
+        assert parent != null;
+        int index = parent.getChildren().indexOf(this);
+        parent.replaceChild(index, newNode);
     }
 
     public static class SerializerFactory implements TypeAdapterFactory, InstanceCreator<GraphNode<?>> {

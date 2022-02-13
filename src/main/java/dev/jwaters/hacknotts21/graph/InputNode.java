@@ -40,4 +40,8 @@ public final class InputNode extends GraphNode<JLabel> {
     public List<GraphNode<?>> getChildren() {
         return Collections.emptyList();
     }
+
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+    }
 }

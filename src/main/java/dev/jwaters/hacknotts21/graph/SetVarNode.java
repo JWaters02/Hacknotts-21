@@ -63,6 +63,11 @@ public final class SetVarNode extends GraphNode<SetVarNode.Panel> {
         return Collections.singletonList(value);
     }
 
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        value = newChild;
+    }
+
     public String getVarName() {
         return varName;
     }

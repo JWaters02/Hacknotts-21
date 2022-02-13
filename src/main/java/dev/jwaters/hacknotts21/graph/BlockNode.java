@@ -59,4 +59,16 @@ public final class BlockNode extends GraphNode<JPanel> {
     public List<GraphNode<?>> getChildren() {
         return children;
     }
+
+    @Override
+    public void replaceChild(int index, GraphNode<?> newChild) {
+        children.set(index, newChild);
+    }
+
+    @Override
+    public void replace(GraphNode<?> newNode) {
+        BlockNode blockNode = (BlockNode) newNode;
+        children.clear();
+        children.addAll(blockNode.children);
+    }
 }
