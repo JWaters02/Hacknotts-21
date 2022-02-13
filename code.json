@@ -1,6 +1,7 @@
 [
   {
     "name": "main",
+    "params": [],
     "body": {
       "children": [
         {
@@ -19,8 +20,11 @@
         {
           "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
           "value": {
-            "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
-            "varName": "var"
+            "_type": "dev.jwaters.hacknotts21.graph.ToStringNode",
+            "value": {
+              "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+              "varName": "var"
+            }
           }
         },
         {
@@ -45,8 +49,11 @@
               {
                 "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
                 "value": {
-                  "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
-                  "varName": "var"
+                  "_type": "dev.jwaters.hacknotts21.graph.ToStringNode",
+                  "value": {
+                    "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+                    "varName": "var"
+                  }
                 }
               },
               {
@@ -78,8 +85,11 @@
         {
           "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
           "value": {
-            "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
-            "varName": "var"
+            "_type": "dev.jwaters.hacknotts21.graph.ToStringNode",
+            "value": {
+              "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+              "varName": "var"
+            }
           }
         }
       ]
