@@ -25,6 +25,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         IfElseNode,
         InputNode,
         IntegerLiteralNode,
+        NotNode,
         PrintNode,
         SetVarNode,
         StringLiteralNode,
