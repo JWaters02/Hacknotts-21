@@ -8,8 +8,8 @@ class PythonCompiler extends CodeCompiler {
     private final StringBuilder writer;
     private int indentationLevel;
 
-    public PythonCompiler(StringBuilder outSB) {
-        this.writer = new StringBuilder(outSB);
+    public PythonCompiler() {
+        this.writer = new StringBuilder();
         this.indentationLevel = 0;
     }
 

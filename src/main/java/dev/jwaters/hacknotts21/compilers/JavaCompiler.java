@@ -9,8 +9,8 @@ class JavaCompiler extends CodeCompiler {
     private final StringBuilder writer;
     private int indentationLevel;
 
-    public JavaCompiler(StringBuilder outSB) {
-        this.writer = new StringBuilder(outSB);
+    public JavaCompiler() {
+        this.writer = new StringBuilder();
         this.indentationLevel = 0;
     }
 

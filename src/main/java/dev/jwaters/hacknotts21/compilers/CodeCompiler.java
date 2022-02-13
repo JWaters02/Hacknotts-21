@@ -17,18 +17,18 @@ enum Language {
 }
 
 public abstract class CodeCompiler {
-    public static void compile(Collection<FunctionRepr> code, Language language, File outFile) throws IOException {
+    public static void compile(Collection<FunctionRepr> code, Language language) throws IOException {
         switch (language) {
             case PYTHON -> {
-                PythonCompiler pythonCompiler = new PythonCompiler(outFile);
+                PythonCompiler pythonCompiler = new PythonCompiler();
                 pythonCompiler.compile(code);
             }
             case JAVA -> {
-                JavaCompiler javaCompiler = new JavaCompiler(outFile);
+                JavaCompiler javaCompiler = new JavaCompiler();
                 javaCompiler.compile(code);
             }
             case LOLCODE -> {
-                LOLCODECompiler lolcodeCompiler = new LOLCODECompiler(outFile);
+                LOLCODECompiler lolcodeCompiler = new LOLCODECompiler();
                 lolcodeCompiler.compile(code);
             }
         }
@@ -36,6 +36,10 @@ public abstract class CodeCompiler {
 
     public void compile(Collection<FunctionRepr> code) throws IOException {
         handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
+    }
+
+    public void constructOutput(StringBuilder outSB) throws IOException {
+        MainForm.getInstance().getTxtCodeOutput().setText(outSB.toString());
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
@@ -126,7 +130,7 @@ public abstract class CodeCompiler {
 
         var functions = DnDSerde.readFromFile(new File("code.json"));
 
-        CodeCompiler.compile(functions, Language.PYTHON, new File("test.py"));
+        CodeCompiler.compile(functions, Language.PYTHON);
     }
 }
 

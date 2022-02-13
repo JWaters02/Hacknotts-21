@@ -82,26 +82,10 @@ public class MainForm {
             pnlCodeCreator.revalidate();
         });
         btnSaveCode.addActionListener(e -> {
-            File file = chooseFile(FileTypes.Code, true);
-            if (file != null) {
-                try (var writer = new BufferedWriter(new FileWriter(file))) {
-                    writer.write(txtCodeOutput.getText());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+
         });
         btnSaveBlocks.addActionListener(e -> {
-            File file = chooseFile(FileTypes.Blocks, true);
-            if (file != null) {
-                try {
-                    DnDSerde.writeToFile(file, functions);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            saveCode();
         });
         btnLoadBlocks.addActionListener(e -> {
             File file = chooseFile(FileTypes.Blocks, false);
@@ -271,6 +255,10 @@ public class MainForm {
         return pnlCodeCreator;
     }
 
+    public JTextArea getTxtCodeOutput() {
+        return txtCodeOutput;
+    }
+
     @Nullable
     private File chooseFile(FileTypes fileType, boolean save) {
         JFileChooser fc = new JFileChooser();
@@ -300,5 +288,17 @@ public class MainForm {
         pnlCodeCreator.remove(component);
         pnlCodeCreator.revalidate();
         pnlCodeCreator.repaint();
+    }
+
+    public void saveCode() {
+        File file = chooseFile(FileTypes.Code, true);
+        if (file != null) {
+            try (var writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write(txtCodeOutput.getText());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(pnlMainWindow, "Error saving file", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

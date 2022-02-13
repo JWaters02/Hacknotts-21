@@ -9,8 +9,8 @@ class LOLCODECompiler extends CodeCompiler {
     private final StringBuilder writer;
     private int indentationLevel;
 
-    public LOLCODECompiler(StringBuilder outSB) {
-        this.writer = new StringBuilder(outSB);
+    public LOLCODECompiler() {
+        this.writer = new StringBuilder();
         this.indentationLevel = 0;
     }
 
