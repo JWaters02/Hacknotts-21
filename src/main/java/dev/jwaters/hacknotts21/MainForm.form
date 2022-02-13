@@ -194,6 +194,16 @@
               <text value="Num Operation"/>
             </properties>
           </component>
+          <component id="d0294" class="javax.swing.JTextField" binding="txtfNotNode" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.TwoNumberOperationNode"/>
+              <opaque value="false"/>
+              <text value="Boolean't"/>
+            </properties>
+          </component>
         </children>
       </toolbar>
       <scrollpane id="198c1" binding="spnCodeCreator" custom-create="true">

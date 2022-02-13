@@ -1,6 +1,7 @@
 package dev.jwaters.hacknotts21.graph;
 
 import com.google.gson.annotations.Expose;
+import dev.jwaters.hacknotts21.MainForm;
 import dev.jwaters.hacknotts21.swing.HintTextField;
 import dev.jwaters.hacknotts21.swing.NodeUIUtils;
 import dev.jwaters.hacknotts21.type.Type;
@@ -77,9 +78,18 @@ public class FunctionRepr {
             headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
             headerPanel.add(new JLabel("Function: "));
             headerPanel.add(nameField);
-            add(headerPanel);
 
+            JToolBar tb = new JToolBar();
+            JButton btn = new JButton("Remove");
+            tb.add(btn);
+            headerPanel.add(tb);
+
+            add(headerPanel);
             add(NodeUIUtils.wrapBody(body));
+
+            btn.addActionListener(e -> {
+                MainForm.getInstance().removeFunction(this);
+            });
         }
     }
 }

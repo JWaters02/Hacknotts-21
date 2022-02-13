@@ -52,6 +52,7 @@ public class MainForm {
     private JButton btnLoadBlocks;
     private JTextField txtfGetVariable;
     private JTextField txtfNumOperation;
+    private JTextField txtfNotNode;
 
     private List<FunctionRepr> functions = new ArrayList<>();
 
@@ -127,6 +128,7 @@ public class MainForm {
         txtfList.add(txtfBoolOperation);
         txtfList.add(txtfGetVariable);
         txtfList.add(txtfNumOperation);
+        txtfList.add(txtfNotNode);
         addDraggableListItem(pnlCodeCreator, txtfList);
 
         spnCodeOutput.setPreferredSize(new Dimension(pnlMainWindow.getWidth(), 200));
@@ -159,6 +161,7 @@ public class MainForm {
         txtfBoolOperation = new JTextField();
         txtfNumOperation = new JTextField();
         txtfGetVariable = new JTextField();
+        txtfNotNode = new JTextField();
     }
 
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
@@ -291,5 +294,11 @@ public class MainForm {
             e.printStackTrace();
         }
         txtCodeOutput.setText(code);
+    }
+
+    public void removeFunction(Component component) {
+        pnlCodeCreator.remove(component);
+        pnlCodeCreator.revalidate();
+        pnlCodeCreator.repaint();
     }
 }
