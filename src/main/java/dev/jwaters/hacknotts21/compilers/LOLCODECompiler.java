@@ -1,33 +1,46 @@
 package dev.jwaters.hacknotts21.compilers;
 
 import dev.jwaters.hacknotts21.graph.*;
+import dev.jwaters.hacknotts21.type.*;
 
 import java.io.IOException;
 
-class PythonCompiler extends CodeCompiler {
+class LOLCODECompiler extends CodeCompiler {
     private final StringBuilder writer;
     private int indentationLevel;
 
-    public PythonCompiler(StringBuilder outSB) {
+    public LOLCODECompiler(StringBuilder outSB) {
         this.writer = new StringBuilder(outSB);
         this.indentationLevel = 0;
     }
 
     @Override
     void declareVar(DeclareVarNode node) {
-        // meaningless in python
+        Type type = node.getType();
+
+        if (type == IntType.INSTANCE) {
+            writer.append("int ");
+        } else if (type == StringType.INSTANCE) {
+            writer.append("String ");
+        } else if (type == BooleanType.INSTANCE) {
+            writer.append("boolean ");
+        } else if (type == VoidType.INSTANCE) {
+            writer.append("void ");
+        }
     }
 
     @Override
     void ifStatement(IfNode node) throws IOException {
-        writer.append("if ");
+        writer.append("if (");
         handleNode(node.getCondition());
-        writer.append(":\n");
+        writer.append(") {\n");
         indent();
         printIndent();
         handleNode(node.getBody());
         writer.append("\n");
         dedent();
+        printIndent();
+        writer.append("}\n");
         printIndent();
     }
 
@@ -42,25 +55,29 @@ class PythonCompiler extends CodeCompiler {
         writer.append("\n");
         dedent();
         printIndent();
-        writer.append("else:\n");
+        writer.append("} else {\n");
         indent();
         printIndent();
         handleNode(node.getElseBody());
         writer.append("\n");
-        printIndent();
         dedent();
+        printIndent();
+        writer.append("}\n");
+        printIndent();
     }
 
     @Override
     void whileStatement(WhileNode node) throws IOException {
-        writer.append("while ");
+        writer.append("while (");
         handleNode(node.getCondition());
-        writer.append(":\n");
+        writer.append(") {\n");
         indent();
         printIndent();
         handleNode(node.getBody());
         writer.append("\n");
         dedent();
+        printIndent();
+        writer.append("}\n");
         printIndent();
     }
 
@@ -69,7 +86,6 @@ class PythonCompiler extends CodeCompiler {
         for (GraphNode<?> child : node.getChildren()) {
             printIndent();
             handleNode(child);
-            writer.append("\n");
         }
     }
 
@@ -80,14 +96,14 @@ class PythonCompiler extends CodeCompiler {
 
     @Override
     void input(InputNode node) {
-        writer.append("input()");
+        writer.append("input();");
     }
 
     @Override
     void print(PrintNode node) throws IOException {
-        writer.append("print(");
+        writer.append("System.out.println(");
         handleNode(node.getValue());
-        writer.append(")");
+        writer.append(");");
     }
 
     @Override
@@ -123,8 +139,8 @@ class PythonCompiler extends CodeCompiler {
         handleNode(node.getLeft());
 
         switch (node.getOperation()) {
-            case AND -> writer.append(" and ");
-            case OR -> writer.append(" or ");
+            case AND -> writer.append(" && ");
+            case OR -> writer.append(" || ");
             case XOR -> writer.append(" ^ ");
             case EQUAL -> writer.append(" == ");
             case NOT_EQUAL -> writer.append(" != ");

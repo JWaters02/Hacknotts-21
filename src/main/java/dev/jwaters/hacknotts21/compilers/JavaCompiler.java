@@ -3,83 +3,81 @@ package dev.jwaters.hacknotts21.compilers;
 import dev.jwaters.hacknotts21.graph.*;
 import dev.jwaters.hacknotts21.type.*;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 class JavaCompiler extends CodeCompiler {
-    private final FileWriter writer;
+    private final StringBuilder writer;
     private int indentationLevel;
 
-    public JavaCompiler(File outFile) throws IOException {
-        this.writer = new FileWriter(outFile);
+    public JavaCompiler(StringBuilder outSB) {
+        this.writer = new StringBuilder(outSB);
         this.indentationLevel = 0;
     }
 
     @Override
-    void declareVar(DeclareVarNode node) throws IOException {
+    void declareVar(DeclareVarNode node) {
         Type type = node.getType();
 
         if (type == IntType.INSTANCE) {
-            writer.write("int ");
+            writer.append("int ");
         } else if (type == StringType.INSTANCE) {
-            writer.write("String ");
+            writer.append("String ");
         } else if (type == BooleanType.INSTANCE) {
-            writer.write("boolean ");
+            writer.append("boolean ");
         } else if (type == VoidType.INSTANCE) {
-            writer.write("void ");
+            writer.append("void ");
         }
     }
 
     @Override
     void ifStatement(IfNode node) throws IOException {
-        writer.write("if (");
+        writer.append("if (");
         handleNode(node.getCondition());
-        writer.write(") {\n");
+        writer.append(") {\n");
         indent();
         printIndent();
         handleNode(node.getBody());
-        writer.write("\n");
+        writer.append("\n");
         dedent();
         printIndent();
-        writer.write("}\n");
+        writer.append("}\n");
         printIndent();
     }
 
     @Override
     void ifElseStatement(IfElseNode node) throws IOException {
-        writer.write("if ");
+        writer.append("if ");
         handleNode(node.getCondition());
-        writer.write(":\n");
+        writer.append(":\n");
         indent();
         printIndent();
         handleNode(node.getIfBody());
-        writer.write("\n");
+        writer.append("\n");
         dedent();
         printIndent();
-        writer.write("} else {\n");
+        writer.append("} else {\n");
         indent();
         printIndent();
         handleNode(node.getElseBody());
-        writer.write("\n");
+        writer.append("\n");
         dedent();
         printIndent();
-        writer.write("}\n");
+        writer.append("}\n");
         printIndent();
     }
 
     @Override
     void whileStatement(WhileNode node) throws IOException {
-        writer.write("while (");
+        writer.append("while (");
         handleNode(node.getCondition());
-        writer.write(") {\n");
+        writer.append(") {\n");
         indent();
         printIndent();
         handleNode(node.getBody());
-        writer.write("\n");
+        writer.append("\n");
         dedent();
         printIndent();
-        writer.write("}\n");
+        writer.append("}\n");
         printIndent();
     }
 
@@ -92,26 +90,26 @@ class JavaCompiler extends CodeCompiler {
     }
 
     @Override
-    void getVar(GetVarNode node) throws IOException {
-        writer.write(node.getVarName());
+    void getVar(GetVarNode node) {
+        writer.append(node.getVarName());
     }
 
     @Override
-    void input(InputNode node) throws IOException {
-        writer.write("input();");
+    void input(InputNode node) {
+        writer.append("input();");
     }
 
     @Override
     void print(PrintNode node) throws IOException {
-        writer.write("System.out.println(");
+        writer.append("System.out.println(");
         handleNode(node.getValue());
-        writer.write(");");
+        writer.append(");");
     }
 
     @Override
     void setVar(SetVarNode node) throws IOException {
-        writer.write(node.getVarName());
-        writer.write(" = ");
+        writer.append(node.getVarName());
+        writer.append(" = ");
         handleNode(node.getValue());
     }
 
@@ -120,17 +118,17 @@ class JavaCompiler extends CodeCompiler {
         handleNode(node.getLeft());
 
         switch (node.getOperation()) {
-            case ADD -> writer.write(" + ");
-            case SUBTRACT -> writer.write(" - ");
-            case MULTIPLY -> writer.write(" * ");
-            case DIVIDE -> writer.write(" / ");
-            case MODULUS -> writer.write(" % ");
-            case EQUAL -> writer.write(" == ");
-            case NOT_EQUAL -> writer.write(" != ");
-            case GREATER_THAN -> writer.write(" > ");
-            case LESS_THAN -> writer.write(" < ");
-            case GREATER_THAN_OR_EQUAL -> writer.write(" >= ");
-            case LESS_THAN_OR_EQUAL -> writer.write(" <= ");
+            case ADD -> writer.append(" + ");
+            case SUBTRACT -> writer.append(" - ");
+            case MULTIPLY -> writer.append(" * ");
+            case DIVIDE -> writer.append(" / ");
+            case MODULUS -> writer.append(" % ");
+            case EQUAL -> writer.append(" == ");
+            case NOT_EQUAL -> writer.append(" != ");
+            case GREATER_THAN -> writer.append(" > ");
+            case LESS_THAN -> writer.append(" < ");
+            case GREATER_THAN_OR_EQUAL -> writer.append(" >= ");
+            case LESS_THAN_OR_EQUAL -> writer.append(" <= ");
         }
 
         handleNode(node.getRight());
@@ -141,30 +139,23 @@ class JavaCompiler extends CodeCompiler {
         handleNode(node.getLeft());
 
         switch (node.getOperation()) {
-            case AND -> writer.write(" && ");
-            case OR -> writer.write(" || ");
-            case XOR -> writer.write(" ^ ");
-            case EQUAL -> writer.write(" == ");
-            case NOT_EQUAL -> writer.write(" != ");
+            case AND -> writer.append(" && ");
+            case OR -> writer.append(" || ");
+            case XOR -> writer.append(" ^ ");
+            case EQUAL -> writer.append(" == ");
+            case NOT_EQUAL -> writer.append(" != ");
         }
 
         handleNode(node.getRight());
     }
 
     @Override
-    void integerLiteral(IntegerLiteralNode node) throws IOException {
-        writer.write(String.format("%d", node.getValue()));
+    void integerLiteral(IntegerLiteralNode node) {
+        writer.append(String.format("%d", node.getValue()));
     }
 
-    @Override
-    void close() throws IOException {
-        writer.close();
-    }
-
-    void printIndent() throws IOException {
-        for (int i = 0; i < indentationLevel; i++) {
-            writer.write(" ");
-        }
+    void printIndent() {
+        writer.append(" ".repeat(Math.max(0, indentationLevel)));
     }
 
     void indent() {

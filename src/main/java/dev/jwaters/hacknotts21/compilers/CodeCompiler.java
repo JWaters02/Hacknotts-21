@@ -12,7 +12,8 @@ import java.util.Map;
 
 enum Language {
     PYTHON,
-    JAVA
+    JAVA,
+    LOLCODE
 }
 
 public abstract class CodeCompiler {
@@ -26,14 +27,15 @@ public abstract class CodeCompiler {
                 JavaCompiler javaCompiler = new JavaCompiler(outFile);
                 javaCompiler.compile(code);
             }
+            case LOLCODE -> {
+                LOLCODECompiler lolcodeCompiler = new LOLCODECompiler(outFile);
+                lolcodeCompiler.compile(code);
+            }
         }
-//        MainForm mainForm = new MainForm();
-//        mainForm.outputCompiledCode(outFile);
     }
 
     public void compile(Collection<FunctionRepr> code) throws IOException {
         handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
-        close();
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
@@ -87,8 +89,6 @@ public abstract class CodeCompiler {
     abstract void twoBooleanOperation(TwoBooleanOperationNode node) throws IOException;
 
     abstract void integerLiteral(IntegerLiteralNode node) throws IOException;
-
-    abstract void close() throws IOException;
 
     public static void main(String[] args) throws IOException {
 //        var blocknode = new BlockNode(null);
