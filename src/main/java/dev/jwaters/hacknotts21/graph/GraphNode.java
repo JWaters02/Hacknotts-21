@@ -11,6 +11,7 @@ import dev.jwaters.hacknotts21.type.Type;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
@@ -61,6 +62,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         component.putClientProperty("node", this);
         NodeUIUtils.addListeners(component);
         addDragHandler(component);
+        component.setBorder(BorderFactory.createLineBorder(Color.RED));
         return component;
     }
     protected abstract C makeComponent();
@@ -70,7 +72,12 @@ public abstract sealed class GraphNode<C extends JComponent> permits
     public abstract List<@Nullable GraphNode<?>> getChildren();
     public abstract void replaceChild(int index, GraphNode<?> newChild);
     protected void addDragHandler(C component) {
-        component.setTransferHandler(new DragTransferHandler());
+        NodeUIUtils.traverseComponents(component, c -> {
+            if (NodeUIUtils.getAssociatedNode(c) == this) {
+                c.setTransferHandler(new DragTransferHandler());
+                c.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

@@ -7,6 +7,7 @@ import dev.jwaters.hacknotts21.type.VoidType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,11 @@ public final class BlockNode extends GraphNode<JPanel> {
     @Override
     protected void addDragHandler(JPanel component) {
         component.setTransferHandler(new DragTransferHandler() {
+            @Override
+            protected boolean isSupportedForImport(Component component) {
+                return true;
+            }
+
             @Override
             protected boolean handleDrop(TransferSupport support, GraphNode<?> replacedNode, JComponent replacedComponent, Constructor<? extends GraphNode<?>> constructor) throws Exception {
                 GraphNode<?> newNode = constructor.newInstance(replacedNode);
