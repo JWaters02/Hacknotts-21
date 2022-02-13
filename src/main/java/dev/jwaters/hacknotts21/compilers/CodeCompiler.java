@@ -15,29 +15,20 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class CodeCompiler {
-    public static void compile(Collection<FunctionRepr> code, Language language) throws IOException {
-        switch (language) {
-            case PYTHON -> {
-                PythonCompiler pythonCompiler = new PythonCompiler();
-                pythonCompiler.compile(code);
-            }
-            case JAVA -> {
-                JavaCompiler javaCompiler = new JavaCompiler();
-                javaCompiler.compile(code);
-            }
-            case LOLCODE -> {
-                LOLCODECompiler lolcodeCompiler = new LOLCODECompiler();
-                lolcodeCompiler.compile(code);
-            }
-        }
+    public StringBuilder writer = new StringBuilder();
+
+    public static String compile(Collection<FunctionRepr> code, Language language) throws IOException {
+        CodeCompiler compiler = switch (language) {
+            case JAVA -> new JavaCompiler();
+            case PYTHON -> new PythonCompiler();
+            case LOLCODE -> new LOLCODECompiler();
+        };
+        compiler.compile(code);
+        return compiler.writer.toString();
     }
 
     public void compile(Collection<FunctionRepr> code) throws IOException {
         handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
-    }
-
-    public void constructOutput(StringBuilder outSB) {
-        MainForm.getInstance().getTxtCodeOutput().setText(outSB.toString());
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
