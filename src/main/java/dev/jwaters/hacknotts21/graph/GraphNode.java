@@ -63,7 +63,6 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         component.putClientProperty("node", this);
         NodeUIUtils.addListeners(component);
         addDragHandler(component);
-        component.setBorder(BorderFactory.createLineBorder(Color.RED));
         return component;
     }
     protected abstract C makeComponent();
@@ -76,7 +75,6 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         NodeUIUtils.traverseComponents(component, c -> {
             if (NodeUIUtils.getAssociatedNode(c) == this) {
                 c.setTransferHandler(new DragTransferHandler());
-                c.setBorder(BorderFactory.createLineBorder(Color.BLUE));
             }
         });
     }
