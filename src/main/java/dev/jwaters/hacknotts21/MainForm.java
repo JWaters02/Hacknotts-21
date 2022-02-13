@@ -2,6 +2,8 @@ package dev.jwaters.hacknotts21;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import dev.jwaters.hacknotts21.graph.GraphNode;
+import dev.jwaters.hacknotts21.swing.HintTextField;
+import dev.jwaters.hacknotts21.type.Type;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -49,7 +51,7 @@ public class MainForm {
 
     public MainForm() {
         // Listeners
-        btnNewFunction.addActionListener(e -> createFunctionJPanel("test function"));
+        btnNewFunction.addActionListener(e -> createFunctionJPanel());
         btnSaveCode.addActionListener(e -> saveToFile(FileTypes.Code, "stuff"));
         btnLoadCode.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Code)));
         btnSaveBlocks.addActionListener(e -> saveToFile(FileTypes.Blocks, "stuff"));
@@ -242,8 +244,17 @@ public class MainForm {
         return out;
     }
 
-    private void createFunctionJPanel(String functionName) {
-        JPanel functionPanel = new JPanel();
+    public static class Panel extends JPanel {
+        public Panel() {
+            setLayout(new FlowLayout());
+            add(new JLabel("Function: "));
+            HintTextField nameField = new HintTextField("Name");
+            add(nameField);
+        }
+    }
+
+    private void createFunctionJPanel() {
+        Panel functionPanel = new Panel();
         functionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         functionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         functionPanel.setOpaque(true);

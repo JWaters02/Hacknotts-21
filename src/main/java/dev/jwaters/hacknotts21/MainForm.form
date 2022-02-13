@@ -12,6 +12,7 @@
       <toolbar id="2304" binding="tbMain" custom-create="true">
         <constraints border-constraint="North"/>
         <properties>
+          <borderPainted value="true"/>
           <foreground color="-10790053"/>
           <opaque value="false"/>
           <preferredSize width="0" height="25"/>
@@ -91,6 +92,8 @@
       <toolbar id="6723" binding="tbBlockStore" custom-create="true">
         <constraints border-constraint="West"/>
         <properties>
+          <background color="-10790053"/>
+          <borderPainted value="false"/>
           <floatable value="true"/>
           <foreground color="-13816531"/>
           <margin top="0" left="0" bottom="0" right="0"/>
@@ -118,7 +121,7 @@
               <dragEnabled value="true"/>
               <editable value="false"/>
               <enabled value="true"/>
-              <name value="dev.jwaters.hacknotts21.graph.GetVarNode.graph.DeclareVarNode"/>
+              <name value="dev.jwaters.hacknotts21.graph.GetVarNode"/>
               <opaque value="false"/>
               <text value="Get Variable"/>
             </properties>
