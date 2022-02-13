@@ -1,24 +1,28 @@
 package dev.jwaters.hacknotts21;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import dev.jwaters.hacknotts21.graph.GraphNode;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+enum FileTypes {
+    Blocks,
+    Code
+}
+
+@SuppressWarnings("unused")
 public class MainForm {
     private JToolBar tbMain;
     private JPanel pnlMainWindow;
@@ -37,90 +41,33 @@ public class MainForm {
     private JTextField txtfIf;
     private JTextField txtfElse;
     private JTextField txtfWhile;
-    private JTextField txtfOperation;
+    private JTextField txtfBoolOperation;
     private JButton btnSaveBlocks;
     private JButton btnLoadBlocks;
+    private JTextField txtfGetVariable;
+    private JTextField txtfNumOperation;
 
     public MainForm() {
-        btnNewFunction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                txtCodeOutput.setText("blah");
-            }
-        });
-
-        btnSaveCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
-                fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        Files.write(file.toPath(), txtCodeOutput.getText().getBytes());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        btnLoadCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
-                fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        btnSaveBlocks.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        Files.write(file.toPath(), "stuff".getBytes());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        btnLoadBlocks.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
+        // Listeners
+        btnNewFunction.addActionListener(e -> createFunctionJPanel("test function"));
+        btnSaveCode.addActionListener(e -> saveToFile(FileTypes.Code, "stuff"));
+        btnLoadCode.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Code)));
+        btnSaveBlocks.addActionListener(e -> saveToFile(FileTypes.Blocks, "stuff"));
+        btnLoadBlocks.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Blocks)));
 
         // Create list of JTextFields from the txtf's
         List<JTextField> txtfList = new ArrayList<>();
-        txtfList.add(txtfDefineVar); txtfList.add(txtfSetVar); txtfList.add(txtfReadInput); txtfList.add(txtfPrint);
-        txtfList.add(txtfIf); txtfList.add(txtfElse); txtfList.add(txtfWhile); txtfList.add(txtfOperation);
+        txtfList.add(txtfDefineVar);
+        txtfList.add(txtfSetVar);
+        txtfList.add(txtfReadInput);
+        txtfList.add(txtfPrint);
+        txtfList.add(txtfIf);
+        txtfList.add(txtfElse);
+        txtfList.add(txtfWhile);
+        txtfList.add(txtfBoolOperation);
+        txtfList.add(txtfGetVariable);
+        txtfList.add(txtfNumOperation);
         addDraggableListItem(pnlCodeCreator, txtfList);
-
     }
 
     public static void main(String[] args) {
@@ -144,19 +91,19 @@ public class MainForm {
         txtfReadInput = new JTextField();
         txtfPrint = new JTextField();
         txtfDefineVar = new JTextField();
-        btnSaveCode = new JButton();
-        btnLoadCode = new JButton();
         txtfIf = new JTextField();
         txtfElse = new JTextField();
         txtfWhile = new JTextField();
-        txtfOperation = new JTextField();
+        txtfBoolOperation = new JTextField();
+        txtfNumOperation = new JTextField();
+        txtfGetVariable = new JTextField();
 
         spnCodeOutput.setPreferredSize(new Dimension(200, 200));
     }
 
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
         var listener = new DragMouseAdapter();
-        TransferHandler handler = new TransferHandler("text");
+        TransferHandler handler = new TransferHandler("name");
         DragTransferHandler dragHandler = new DragTransferHandler();
         pnlCodeCreator.setTransferHandler(dragHandler);
         pnlCodeCreator.addMouseListener(listener);
@@ -175,8 +122,7 @@ public class MainForm {
         }
     }
 
-    // Make new TransferHandler class that overrides canImport and importData functions
-    private static class DragTransferHandler extends TransferHandler {
+    private class DragTransferHandler extends TransferHandler {
         @Override
         public boolean canImport(TransferSupport support) {
             if (!support.isDrop()) {
@@ -195,6 +141,7 @@ public class MainForm {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public boolean importData(TransferSupport support) {
             if (!canImport(support)) {
                 return false;
@@ -208,9 +155,18 @@ public class MainForm {
                 return false;
             }
 
-            JPanel pnlCodeCreator = (JPanel) support.getComponent();
-            JTextField txtf = new JTextField(line);
-            pnlCodeCreator.add(txtf);
+            try {
+                Class<?> blockClass = Class.forName(line);
+                if (GraphNode.class.isAssignableFrom(blockClass)) {
+                    Constructor<? extends GraphNode<?>> constructor = (Constructor<? extends GraphNode<?>>) blockClass.asSubclass(GraphNode.class).getConstructor(GraphNode.class);
+                    GraphNode<?> node = constructor.newInstance((Object) null);
+                    addJPanelToCodeCreator(node.createComponent());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println(line);
             return true;
         }
 
@@ -229,14 +185,8 @@ public class MainForm {
         }
     }
 
-    private void addJPanelToCodeCreator() {
-        JPanel panel = new JPanel();
-        panel.setOpaque(true);
-        panel.setVisible(true);
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        pnlCodeCreator.add(panel);
+    private void addJPanelToCodeCreator(JComponent component) {
+        pnlMainWindow.add(component);
     }
 
     private List<JPanel> getJPanelsInCodeCreator() {
@@ -256,6 +206,57 @@ public class MainForm {
 
     public JPanel getPnlCodeCreator() {
         return pnlCodeCreator;
+    }
+
+    private void saveToFile(FileTypes fileType, String data) {
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
+        if (fileType == FileTypes.Blocks) {
+            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        }
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                Files.write(file.toPath(), data.getBytes());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private String loadFromFile(FileTypes fileType) {
+        JFileChooser fc = new JFileChooser();
+        String out = "";
+        int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
+        if (fileType == FileTypes.Blocks) {
+            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        }
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                out = new String(Files.readAllBytes(file.toPath()));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return out;
+    }
+
+    private void createFunctionJPanel(String functionName) {
+        JPanel functionPanel = new JPanel();
+        functionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        functionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        functionPanel.setOpaque(true);
+        functionPanel.setBackground(Color.darkGray);
+        // Set preferred height to be the same as the height of the JPanel
+        functionPanel.setPreferredSize(new Dimension(300, pnlCodeCreator.getHeight() - 20));
+        // Align the new panel to be to the right of the previous one in pnlCodeCreator if exists
+        if (pnlCodeCreator.getComponentCount() > 0) {
+            functionPanel.setLocation(pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getX() +
+                    pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getWidth(), 0);
+        }
+        pnlCodeCreator.add(functionPanel);
+        pnlCodeCreator.revalidate();
     }
 
     public void outputCompiledCode(File file) {
