@@ -218,19 +218,26 @@
         <constraints border-constraint="South"/>
         <properties>
           <autoscrolls value="false"/>
-          <verticalScrollBarPolicy value="20"/>
+          <horizontalScrollBarPolicy value="30"/>
+          <opaque value="true"/>
+          <verticalScrollBarPolicy value="22"/>
         </properties>
         <border type="none"/>
         <children>
           <component id="aeb3" class="javax.swing.JTextArea" binding="txtCodeOutput" custom-create="true">
             <constraints/>
             <properties>
+              <autoscrolls value="false"/>
+              <caretColor color="-10790053"/>
               <editable value="false"/>
+              <focusable value="true"/>
+              <lineWrap value="true"/>
               <opaque value="false"/>
-              <preferredSize width="0" height="100"/>
+              <preferredSize width="0" height="200"/>
+              <requestFocusEnabled value="true"/>
               <selectionColor color="-10790053"/>
-              <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsad&#10;sadas&#10;dsad&#10;"/>
-              <wrapStyleWord value="false"/>
+              <text value="some code lol &#10;morecode&#10;d&#10;d&#10;d&#10;d&#10;d&#10;d&#10;dtest&#10;&#10;dsdsadsad&#10;asdsadhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh&#10;sadas&#10;dsad&#10;"/>
+              <wrapStyleWord value="true"/>
             </properties>
             <clientProperties>
               <html.disable class="java.lang.Boolean" value="false"/>

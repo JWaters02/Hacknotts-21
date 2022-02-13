@@ -120,6 +120,9 @@ public class MainForm {
         txtfList.add(txtfGetVariable);
         txtfList.add(txtfNumOperation);
         addDraggableListItem(pnlCodeCreator, txtfList);
+
+        spnCodeOutput.setViewportView(txtCodeOutput);
+        spnCodeOutput.setPreferredSize(new Dimension(pnlMainWindow.getWidth(), 200));
     }
 
     public static void main(String[] args) {
@@ -149,8 +152,6 @@ public class MainForm {
         txtfBoolOperation = new JTextField();
         txtfNumOperation = new JTextField();
         txtfGetVariable = new JTextField();
-
-        spnCodeOutput.setPreferredSize(new Dimension(200, 200));
     }
 
     public void addDraggableListItem(JPanel pnlCodeCreator, List<JTextField> txtfList) {
