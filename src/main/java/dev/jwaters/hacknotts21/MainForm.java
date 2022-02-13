@@ -113,7 +113,7 @@ public class MainForm {
         });
         btnCompile.addActionListener(e -> {
             try {
-                var functions = DnDSerde.readFromFile(new File("code.json"));
+                var functions = getFunctions();
                 System.out.print(functions);
                 JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
                 String code = CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
