@@ -50,13 +50,10 @@ public class DragTransferHandler extends TransferHandler {
             Class<?> blockClass = Class.forName(line);
             if (GraphNode.class.isAssignableFrom(blockClass)) {
                 Constructor<? extends GraphNode<?>> constructor = (Constructor<? extends GraphNode<?>>) blockClass.asSubclass(GraphNode.class).getConstructor(GraphNode.class);
-                GraphNode<?> newNode = constructor.newInstance((Object) null);
-                JComponent newComponent = newNode.createComponent();
                 GraphNode<?> replacedNode = NodeUIUtils.getAssociatedNode(replacedComponent);
                 if (replacedNode == null) {
                     return false;
                 }
-                replacedNode.replace(newNode);
                 for (; replacedComponent != null && replacedComponent.getParent() instanceof JComponent; replacedComponent = (JComponent) replacedComponent.getParent()) {
                     if (NodeUIUtils.getDirectAssociatedNode(replacedComponent) == replacedNode) {
                         break;
@@ -65,27 +62,37 @@ public class DragTransferHandler extends TransferHandler {
                 if (replacedComponent == null) {
                     return false;
                 }
-                Container replacedParent = replacedComponent.getParent();
-                Component[] children = replacedParent.getComponents().clone();
-                int index;
-                for (index = 0; index < children.length; index++) {
-                    if (children[index] == replacedComponent) {
-                        break;
-                    }
+                if (!handleDrop(support, replacedNode, replacedComponent, constructor)) {
+                    return false;
                 }
-                children[index] = newComponent;
-                replacedParent.removeAll();
-                for (Component child : children) {
-                    replacedParent.add(child);
-                }
-                replacedParent.revalidate();
-                NodeUIUtils.onPropertyChanged(newComponent);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         System.out.println(line);
+        return true;
+    }
+
+    protected boolean handleDrop(TransferSupport support, GraphNode<?> replacedNode, JComponent replacedComponent, Constructor<? extends GraphNode<?>> constructor) throws Exception {
+        Container replacedParent = replacedComponent.getParent();
+        GraphNode<?> newNode = constructor.newInstance(replacedNode.getParent());
+        JComponent newComponent = newNode.createComponent();
+        replacedNode.replace(newNode);
+        Component[] children = replacedParent.getComponents().clone();
+        int index;
+        for (index = 0; index < children.length; index++) {
+            if (children[index] == replacedComponent) {
+                break;
+            }
+        }
+        children[index] = newComponent;
+        replacedParent.removeAll();
+        for (Component child : children) {
+            replacedParent.add(child);
+        }
+        replacedParent.revalidate();
+        NodeUIUtils.onPropertyChanged(newComponent);
         return true;
     }
 

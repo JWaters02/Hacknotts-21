@@ -60,7 +60,7 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         C component = makeComponent();
         component.putClientProperty("node", this);
         NodeUIUtils.addListeners(component);
-        component.setTransferHandler(new DragTransferHandler());
+        addDragHandler(component);
         return component;
     }
     protected abstract C makeComponent();
@@ -69,6 +69,9 @@ public abstract sealed class GraphNode<C extends JComponent> permits
 
     public abstract List<@Nullable GraphNode<?>> getChildren();
     public abstract void replaceChild(int index, GraphNode<?> newChild);
+    protected void addDragHandler(C component) {
+        component.setTransferHandler(new DragTransferHandler());
+    }
 
     @SuppressWarnings("unchecked")
     public static <T extends JComponent> void doReadFromComponent(GraphNode<?> node, T component) throws UserInputException {
