@@ -301,4 +301,8 @@ public class MainForm {
         pnlCodeCreator.revalidate();
         pnlCodeCreator.repaint();
     }
+
+    public List<FunctionRepr> getFunctions() {
+        return functions;
+    }
 }

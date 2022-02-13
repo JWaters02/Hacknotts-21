@@ -48,8 +48,38 @@
                   "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
                   "varName": "var"
                 }
+              },
+              {
+                "_type": "dev.jwaters.hacknotts21.graph.CallFunctionNode",
+                "functionName": "main2",
+                "parameters": [
+                  {
+                    "_type": "dev.jwaters.hacknotts21.graph.IntegerLiteralNode",
+                    "value": 2
+                  }
+                ]
               }
             ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "main2",
+    "params": [
+      {
+        "name": "var",
+        "type": "int"
+      }
+    ],
+    "body": {
+      "children": [
+        {
+          "_type": "dev.jwaters.hacknotts21.graph.PrintNode",
+          "value": {
+            "_type": "dev.jwaters.hacknotts21.graph.GetVarNode",
+            "varName": "var"
           }
         }
       ]

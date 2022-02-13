@@ -30,7 +30,9 @@ public abstract sealed class GraphNode<C extends JComponent> permits
         SetVarNode,
         StringLiteralNode,
         TwoBooleanOperationNode,
-        TwoNumberOperationNode {
+        TwoNumberOperationNode,
+        CallFunctionNode
+    {
     @SuppressWarnings("unchecked")
     public static final Class<? extends GraphNode<?>>[] GRAPH_NODE_TYPES = JavaIsBadUtil.getConcreteClasses((Class<GraphNode<?>>) (Class<?>) GraphNode.class);
 
