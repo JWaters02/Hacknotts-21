@@ -12,28 +12,34 @@ import java.util.Map;
 
 enum Language {
     PYTHON,
-    JAVA
+    JAVA,
+    LOLCODE
 }
 
 public abstract class CodeCompiler {
-    public static void compile(Collection<FunctionRepr> code, Language language, File outFile) throws IOException {
+    public static void compile(Collection<FunctionRepr> code, Language language) throws IOException {
         switch (language) {
             case PYTHON -> {
-                PythonCompiler pythonCompiler = new PythonCompiler(outFile);
+                PythonCompiler pythonCompiler = new PythonCompiler();
                 pythonCompiler.compile(code);
             }
             case JAVA -> {
-                JavaCompiler javaCompiler = new JavaCompiler(outFile);
+                JavaCompiler javaCompiler = new JavaCompiler();
                 javaCompiler.compile(code);
             }
+            case LOLCODE -> {
+                LOLCODECompiler lolcodeCompiler = new LOLCODECompiler();
+                lolcodeCompiler.compile(code);
+            }
         }
-//        MainForm mainForm = new MainForm();
-//        mainForm.outputCompiledCode(outFile);
     }
 
     public void compile(Collection<FunctionRepr> code) throws IOException {
         handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
-        close();
+    }
+
+    public void constructOutput(StringBuilder outSB) throws IOException {
+        MainForm.getInstance().getTxtCodeOutput().setText(outSB.toString());
     }
 
     void handleNode(GraphNode<?> node) throws IOException {
@@ -88,8 +94,6 @@ public abstract class CodeCompiler {
 
     abstract void integerLiteral(IntegerLiteralNode node) throws IOException;
 
-    abstract void close() throws IOException;
-
     public static void main(String[] args) throws IOException {
 //        var blocknode = new BlockNode(null);
 //
@@ -126,7 +130,7 @@ public abstract class CodeCompiler {
 
         var functions = DnDSerde.readFromFile(new File("code.json"));
 
-        CodeCompiler.compile(functions, Language.PYTHON, new File("test.py"));
+        CodeCompiler.compile(functions, Language.PYTHON);
     }
 }
 
