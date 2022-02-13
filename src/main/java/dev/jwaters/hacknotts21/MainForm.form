@@ -107,8 +107,20 @@
               <dragEnabled value="true"/>
               <editable value="false"/>
               <enabled value="true"/>
+              <name value="dev.jwaters.hacknotts21.graph.DeclareVarNode"/>
               <opaque value="false"/>
               <text value="Define Variable"/>
+            </properties>
+          </component>
+          <component id="54ec7" class="javax.swing.JTextField" binding="txtfGetVariable" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <enabled value="true"/>
+              <name value="dev.jwaters.hacknotts21.graph.GetVarNode.graph.DeclareVarNode"/>
+              <opaque value="false"/>
+              <text value="Get Variable"/>
             </properties>
           </component>
           <component id="7341a" class="javax.swing.JTextField" binding="txtfSetVar" custom-create="true">
@@ -117,6 +129,7 @@
               <dragEnabled value="true"/>
               <editable value="false"/>
               <enabled value="true"/>
+              <name value="dev.jwaters.hacknotts21.graph.SetVarNode"/>
               <opaque value="false"/>
               <text value="Set Variable"/>
             </properties>
@@ -126,6 +139,7 @@
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.InputNode"/>
               <opaque value="false"/>
               <text value="Read Input"/>
             </properties>
@@ -135,6 +149,7 @@
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.PrintNode"/>
               <opaque value="false"/>
               <text value="Print"/>
             </properties>
@@ -144,6 +159,7 @@
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.IfNode"/>
               <opaque value="false"/>
               <text value="If Statement"/>
             </properties>
@@ -153,6 +169,7 @@
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.IfElseNode"/>
               <opaque value="false"/>
               <text value="Else Statement"/>
             </properties>
@@ -162,17 +179,29 @@
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.WhileNode"/>
               <opaque value="false"/>
               <text value="While Loop"/>
             </properties>
           </component>
-          <component id="5e84a" class="javax.swing.JTextField" binding="txtfOperation" custom-create="true">
+          <component id="5e84a" class="javax.swing.JTextField" binding="txtfBoolOperation" custom-create="true">
             <constraints/>
             <properties>
               <dragEnabled value="true"/>
               <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.TwoBooleanOperationNode"/>
               <opaque value="false"/>
-              <text value="Operation"/>
+              <text value="Bool Operation"/>
+            </properties>
+          </component>
+          <component id="122f3" class="javax.swing.JTextField" binding="txtfNumOperation" custom-create="true">
+            <constraints/>
+            <properties>
+              <dragEnabled value="true"/>
+              <editable value="false"/>
+              <name value="dev.jwaters.hacknotts21.graph.TwoNumberOperationNode"/>
+              <opaque value="false"/>
+              <text value="Num Operation"/>
             </properties>
           </component>
         </children>
