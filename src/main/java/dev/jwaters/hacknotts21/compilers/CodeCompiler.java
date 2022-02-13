@@ -36,7 +36,7 @@ public abstract class CodeCompiler {
         handleNode(code.stream().filter(function -> function.getName().equals("main")).findFirst().get().getBody());
     }
 
-    public void constructOutput(StringBuilder outSB) throws IOException {
+    public void constructOutput(StringBuilder outSB) {
         MainForm.getInstance().getTxtCodeOutput().setText(outSB.toString());
     }
 
@@ -93,40 +93,8 @@ public abstract class CodeCompiler {
     abstract void integerLiteral(IntegerLiteralNode node) throws IOException;
 
     public static void main(String[] args) throws IOException {
-//        var blocknode = new BlockNode(null);
-//
-//        var declare = new DeclareVarNode(blocknode);
-//        declare.setName("test");
-//        declare.setType(IntType.INSTANCE);
-//
-//        var ifnode = new IfNode(blocknode);
-//        var condition = new TwoNumberOperationNode(ifnode);
-//        condition.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.EQUAL);
-//        var getvar1 = new GetVarNode(condition);
-//        getvar1.setVarName("test");
-//        var literal1 = new IntegerLiteralNode(condition);
-//        literal1.setValue(0);
-//        condition.setLeft(getvar1);
-//        condition.setRight(literal1);
-//
-//        var setvar = new SetVarNode(ifnode);
-//        setvar.setVarName("test");
-//        var add = new TwoNumberOperationNode(setvar);
-//        add.setOperation(TwoNumberOperationNode.TwoNumberOperationEnum.ADD);
-//        var getvar2 = new GetVarNode(add);
-//        getvar2.setVarName("test");
-//        var literal2 = new IntegerLiteralNode(add);
-//        literal2.setValue(1);
-//
-//        add.setLeft(getvar2);
-//        add.setRight(literal2);
-//        setvar.setValue(add);
-//        ifnode.setCondition(condition);
-//        ifnode.getBody().getChildren().add(setvar);
-//        blocknode.getChildren().add(ifnode);
-//        compile(Map.of("main", blocknode), Language.JAVA, new File("test.java"));
-
         var functions = DnDSerde.readFromFile(new File("code.json"));
+
         JComboBox<Language> cbLangs = MainForm.getInstance().getCbSelectLang();
         CodeCompiler.compile(functions, (Language) Objects.requireNonNull(cbLangs.getSelectedItem()));
     }
