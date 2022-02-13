@@ -208,10 +208,12 @@
       </toolbar>
       <scrollpane id="198c1" binding="spnCodeCreator" custom-create="true">
         <constraints border-constraint="Center"/>
-        <properties/>
+        <properties>
+          <horizontalScrollBarPolicy value="32"/>
+        </properties>
         <border type="none"/>
         <children>
-          <grid id="7a1e3" binding="pnlCodeCreator" custom-create="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+          <grid id="7a1e3" binding="pnlCodeCreator" custom-create="true" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints/>
             <properties>
               <foreground color="-10790053"/>

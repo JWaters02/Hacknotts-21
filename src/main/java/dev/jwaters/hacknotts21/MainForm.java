@@ -17,6 +17,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+enum FileTypes {
+    Blocks,
+    Code
+}
+
 @SuppressWarnings("unused")
 public class MainForm {
     private JToolBar tbMain;
@@ -43,69 +48,26 @@ public class MainForm {
     private JTextField txtfNumOperation;
 
     public MainForm() {
-        btnNewFunction.addActionListener(e -> txtCodeOutput.setText("blah"));
-
-        btnSaveCode.addActionListener(e -> {
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
-            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                try {
-                    Files.write(file.toPath(), txtCodeOutput.getText().getBytes());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        btnLoadCode.addActionListener(e -> {
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
-            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                try {
-                    txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        btnSaveBlocks.addActionListener(e -> {
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                try {
-                    Files.write(file.toPath(), "stuff".getBytes());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        btnLoadBlocks.addActionListener(e -> {
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                try {
-                    txtCodeOutput.setText(new String(Files.readAllBytes(file.toPath())));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+        // Listeners
+        btnNewFunction.addActionListener(e -> createFunctionJPanel("test function"));
+        btnSaveCode.addActionListener(e -> saveToFile(FileTypes.Code, "stuff"));
+        btnLoadCode.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Code)));
+        btnSaveBlocks.addActionListener(e -> saveToFile(FileTypes.Blocks, "stuff"));
+        btnLoadBlocks.addActionListener(e -> txtCodeOutput.setText(loadFromFile(FileTypes.Blocks)));
 
         // Create list of JTextFields from the txtf's
         List<JTextField> txtfList = new ArrayList<>();
-        txtfList.add(txtfDefineVar); txtfList.add(txtfSetVar); txtfList.add(txtfReadInput); txtfList.add(txtfPrint);
-        txtfList.add(txtfIf); txtfList.add(txtfElse); txtfList.add(txtfWhile); txtfList.add(txtfBoolOperation);
-        txtfList.add(txtfGetVariable); txtfList.add(txtfNumOperation);
+        txtfList.add(txtfDefineVar);
+        txtfList.add(txtfSetVar);
+        txtfList.add(txtfReadInput);
+        txtfList.add(txtfPrint);
+        txtfList.add(txtfIf);
+        txtfList.add(txtfElse);
+        txtfList.add(txtfWhile);
+        txtfList.add(txtfBoolOperation);
+        txtfList.add(txtfGetVariable);
+        txtfList.add(txtfNumOperation);
         addDraggableListItem(pnlCodeCreator, txtfList);
-
     }
 
     public static void main(String[] args) {
@@ -160,7 +122,6 @@ public class MainForm {
         }
     }
 
-    // Make new TransferHandler class that overrides canImport and importData functions
     private class DragTransferHandler extends TransferHandler {
         @Override
         public boolean canImport(TransferSupport support) {
@@ -245,6 +206,57 @@ public class MainForm {
 
     public JPanel getPnlCodeCreator() {
         return pnlCodeCreator;
+    }
+
+    private void saveToFile(FileTypes fileType, String data) {
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showSaveDialog(MainForm.this.pnlMainWindow);
+        if (fileType == FileTypes.Blocks) {
+            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        }
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                Files.write(file.toPath(), data.getBytes());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private String loadFromFile(FileTypes fileType) {
+        JFileChooser fc = new JFileChooser();
+        String out = "";
+        int returnVal = fc.showOpenDialog(MainForm.this.pnlMainWindow);
+        if (fileType == FileTypes.Blocks) {
+            fc.setFileFilter(new FileNameExtensionFilter("JSON", "json"));
+        }
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                out = new String(Files.readAllBytes(file.toPath()));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return out;
+    }
+
+    private void createFunctionJPanel(String functionName) {
+        JPanel functionPanel = new JPanel();
+        functionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        functionPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        functionPanel.setOpaque(true);
+        functionPanel.setBackground(Color.darkGray);
+        // Set preferred height to be the same as the height of the JPanel
+        functionPanel.setPreferredSize(new Dimension(300, pnlCodeCreator.getHeight() - 20));
+        // Align the new panel to be to the right of the previous one in pnlCodeCreator if exists
+        if (pnlCodeCreator.getComponentCount() > 0) {
+            functionPanel.setLocation(pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getX() +
+                    pnlCodeCreator.getComponent(pnlCodeCreator.getComponentCount() - 1).getWidth(), 0);
+        }
+        pnlCodeCreator.add(functionPanel);
+        pnlCodeCreator.revalidate();
     }
 
     public void outputCompiledCode(File file) {
