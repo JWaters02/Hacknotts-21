@@ -29,6 +29,8 @@ enum FileTypes {
 
 @SuppressWarnings("unused")
 public class MainForm {
+    private static MainForm instance;
+
     private JToolBar tbMain;
     private JPanel pnlMainWindow;
     private JTextArea txtCodeOutput;
@@ -53,6 +55,10 @@ public class MainForm {
 
     private List<FunctionRepr> functions = new ArrayList<>();
 
+    public static MainForm getInstance() {
+        return instance;
+    }
+
     private void loadFunctions(List<FunctionRepr> functions) {
         this.functions = functions;
         pnlCodeCreator.removeAll();
@@ -65,6 +71,8 @@ public class MainForm {
     }
 
     public MainForm() {
+        instance = this;
+
         // Listeners
         btnNewFunction.addActionListener(e -> {
             FunctionRepr function = new FunctionRepr("");
