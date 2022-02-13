@@ -15,7 +15,7 @@ class JavaCompiler extends CodeCompiler {
 
     @Override
     void handleToString(ToStringNode node) throws IOException {
-        writer.append("toString(");
+        writer.append("Objects.toString(");
         handleNode(node.getValue());
         writer.append(")");
     }
@@ -43,7 +43,8 @@ class JavaCompiler extends CodeCompiler {
             }
             handleNode(node.getParameters().get(i));
         }
-        writer.append(")");
+        writer.append(");");
+        printIndent();
     }
 
     @Override
@@ -143,6 +144,8 @@ class JavaCompiler extends CodeCompiler {
         writer.append(node.getVarName());
         writer.append(" = ");
         handleNode(node.getValue());
+        writer.append(";\n");
+        printIndent();
     }
 
     @Override
